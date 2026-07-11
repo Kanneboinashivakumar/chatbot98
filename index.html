@@ -1013,11 +1013,10 @@ function showNextLine(){
     setTimeout(showNextLine, 260);
   }
 }
+let p = 0;
 showNextLine();
 initStarryBg();
 drawCrtOscilloscope();
-
-let p = 0;
 const ledOh = document.getElementById('led-oh');
 const ledTxrx = document.getElementById('led-txrx');
 const ledCd = document.getElementById('led-cd');
