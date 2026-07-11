@@ -96,6 +96,8 @@
   .bl-buddy:hover{background:#e6f0ff;}
   .dot{width:9px;height:9px;border-radius:50%;flex:none;}
   .dot.online{background:var(--xp-green);box-shadow:0 0 3px var(--xp-green);}
+  .dot.away{background:var(--xp-away);box-shadow:0 0 3px var(--xp-away);}
+  .dot.offline-dot{background:#888;box-shadow:none;}
   .bl-name{color:var(--link-purple);text-decoration:underline;font-weight:bold;}
   .bl-status{color:#666;font-size:10.5px;margin-left:16px;display:block;}
   .bl-footer{
@@ -202,7 +204,14 @@
         <span class="bl-status">Active now &mdash; "brb, thinking..."</span>
       </div>
     </div>
-    <div class="bl-group">&#9660; Offline (0)</div>
+    <div class="bl-group">&#9660; Offline (1)</div>
+    <div class="bl-buddy offline" style="opacity: 0.5; cursor: default;">
+      <span class="dot offline-dot"></span>
+      <div>
+        <span class="bl-name" style="color: #666; text-decoration: none; font-weight: normal;">SmarterChild</span>
+        <span class="bl-status">Last seen: 03/14/2006 &mdash; "carrier lost"</span>
+      </div>
+    </div>
   </div>
   <div class="bl-footer">
     <span id="visitCounter">Visitors: 000001</span>
@@ -292,6 +301,10 @@ enterBtn.addEventListener('click', ()=>{
   document.getElementById('boot').style.display = 'none';
   document.getElementById('buddylist').classList.add('show');
   startTheme();
+  // Initialize and play sign-on sound
+  playSignOnSound();
+  // Start the idle detection timer
+  resetIdleTimer();
 });
 
 // ---------------- SYNTHESIZED "MIDI" BACKGROUND THEME ----------------
@@ -380,6 +393,62 @@ function stopTheme(){
   if(actx) actx.suspend();
 }
 
+// ---------------- SYNTHESIZED IM SYSTEM SOUNDS ----------------
+function playSignOnSound() {
+  try {
+    actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+    if (actx.state === 'suspended') actx.resume();
+    const now = actx.currentTime;
+    
+    // Ascending retro chime: C5, E5, G5, C6 (classic AIM style but synthesized)
+    const notes = [523.25, 659.25, 783.99, 1046.50];
+    notes.forEach((freq, idx) => {
+      const osc = actx.createOscillator();
+      const g = actx.createGain();
+      osc.type = 'sine';
+      osc.frequency.value = freq;
+      
+      const startTime = now + idx * 0.07;
+      const dur = 0.15;
+      
+      g.gain.setValueAtTime(0.0001, startTime);
+      g.gain.linearRampToValueAtTime(0.05, startTime + 0.015);
+      g.gain.exponentialRampToValueAtTime(0.0001, startTime + dur);
+      
+      osc.connect(g).connect(actx.destination);
+      osc.start(startTime);
+      osc.stop(startTime + dur + 0.02);
+    });
+  } catch (e) {
+    console.warn('Sign-on sound failed:', e);
+  }
+}
+
+function playMessageSound() {
+  try {
+    actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+    if (actx.state === 'suspended') actx.resume();
+    const now = actx.currentTime;
+    
+    // Retro digital notification "blip" - quick chime at 880Hz (A5) then 1320Hz (E6)
+    const osc = actx.createOscillator();
+    const g = actx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(880, now);
+    osc.frequency.exponentialRampToValueAtTime(1320, now + 0.08);
+    
+    g.gain.setValueAtTime(0.0001, now);
+    g.gain.linearRampToValueAtTime(0.07, now + 0.01);
+    g.gain.exponentialRampToValueAtTime(0.0001, now + 0.14);
+    
+    osc.connect(g).connect(actx.destination);
+    osc.start(now);
+    osc.stop(now + 0.16);
+  } catch (e) {
+    console.warn('Message sound failed:', e);
+  }
+}
+
 document.getElementById('musicToggle').addEventListener('click', (e)=>{
   musicOn = !musicOn;
   e.target.textContent = musicOn ? '[turn off music]' : '[turn on music]';
@@ -394,6 +463,7 @@ document.getElementById('openChat').addEventListener('click', ()=>{
   if(chatlog.children.length===0){
     pushMsg('bot', "heyyy! its ur AI buddy from the future lol. ask me anything (yes this really works, its a real AI)");
   }
+  resetIdleTimer();
 });
 document.getElementById('closeChat').addEventListener('click', ()=>{
   chatwin.classList.remove('show');
@@ -471,6 +541,7 @@ async function sendMessage(){
   history.push({role:'user', content:text});
   msgInput.value = '';
   startTyping();
+  resetIdleTimer();
 
   try{
     // Calls our own serverless proxy (api/chat.js) — the real model API key
@@ -485,10 +556,14 @@ async function sendMessage(){
     if(!data.reply) throw new Error('empty reply from proxy');
     stopTyping();
     pushMsg('bot', data.reply);
+    playMessageSound();
+    resetIdleTimer();
     history.push({role:'assistant', content:data.reply});
   }catch(err){
     stopTyping();
     pushMsg('bot', "*connection lost* ...ur message didn't send, the modem might've dropped carrier. try again in a sec.");
+    playMessageSound();
+    resetIdleTimer();
     console.error(err);
   }
 }
@@ -500,6 +575,62 @@ msgInput.addEventListener('keydown', (e)=>{
     sendMessage();
   }
 });
+
+// ---------------- IDLE & AWAY STATE DETECTOR ----------------
+const AWAY_MESSAGES = [
+  "*~* eating pizza brb *~*",
+  "studying for midterms... do not disturb!!",
+  "listening to My Chemical Romance... standard teen angst loading...",
+  "out with friends, leave a msg!",
+  "offline but actually online, just dodging people"
+];
+
+let idleTimer = null;
+let awayCycleInterval = null;
+let currentAwayIndex = 0;
+let isAway = false;
+const idleThreshold = 90000; // 90 seconds of inactivity
+
+function resetIdleTimer() {
+  if (isAway) {
+    isAway = false;
+    const dot = document.querySelector('#openChat .dot');
+    if (dot) {
+      dot.className = 'dot online';
+    }
+    const statusEl = document.querySelector('#openChat .bl-status');
+    if (statusEl) {
+      statusEl.innerHTML = 'Active now &mdash; "brb, thinking..."';
+    }
+    clearInterval(awayCycleInterval);
+  }
+  clearTimeout(idleTimer);
+  idleTimer = setTimeout(goAway, idleThreshold);
+}
+
+function goAway() {
+  isAway = true;
+  const dot = document.querySelector('#openChat .dot');
+  if (dot) {
+    dot.className = 'dot away';
+  }
+  const statusEl = document.querySelector('#openChat .bl-status');
+  if (statusEl) {
+    const now = new Date();
+    const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    statusEl.innerHTML = `Idle since ${timeStr}`;
+    
+    currentAwayIndex = 0;
+    clearInterval(awayCycleInterval);
+    awayCycleInterval = setInterval(() => {
+      statusEl.innerHTML = `Away &mdash; "${AWAY_MESSAGES[currentAwayIndex]}"`;
+      currentAwayIndex = (currentAwayIndex + 1) % AWAY_MESSAGES.length;
+    }, 40000);
+  }
+}
+
+// Hook user input to reset idle timer
+msgInput.addEventListener('input', resetIdleTimer);
 </script>
 </body>
 </html>
