@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>AI Messenger 2006</title>
+<style>
+  :root{
+    --xp-navy:#0a246a;
+    --xp-blue:#3169c6;
+    --xp-lightblue:#a6caf0;
+    --xp-silver:#ece9d8;
+    --xp-silverdark:#c0c0c0;
+    --xp-green:#3ad900;
+    --xp-away:#f0a30a;
+    --link-purple:#800080;
+    --chat-user:#0000cc;
+    --chat-bot:#cc0000;
+  }
+  *{box-sizing:border-box;}
+  html,body{
+    height:100%;margin:0;
+    background:#5a7edc url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="4" height="4"><rect width="4" height="4" fill="%235a7edc"/><rect width="2" height="2" fill="%236b8ee6"/></svg>');
+    font-family: Tahoma, Geneva, sans-serif;
+    display:flex;align-items:center;justify-content:center;
+    overflow:hidden;
+  }
+  button{font-family:inherit;}
+  :focus-visible{outline:2px solid #ffdf3c;outline-offset:1px;}
+
+  /* ---------- BOOT / DIAL-UP SCREEN ---------- */
+  #boot{
+    width:100%;height:100%;background:#000;color:#c0c0c0;
+    font-family:"Courier New", monospace; font-size:14px;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    position:fixed;inset:0;z-index:100;
+  }
+  #boot pre{color:#00ff66;margin:0 0 18px 0;font-size:12px;line-height:1.3;text-align:center;}
+  #bootlines{width:520px;max-width:90vw;}
+  .bootline{opacity:0;white-space:pre-wrap;margin:2px 0;}
+  .bootline.show{opacity:1;}
+  .ok{color:#00ff66;}
+  #dialbar{width:520px;max-width:90vw;height:18px;border:1px solid #444;margin-top:14px;position:relative;background:#111;}
+  #dialbar-fill{height:100%;width:0%;background:repeating-linear-gradient(45deg,#00aaff,#00aaff 8px,#0077cc 8px,#0077cc 16px);transition:width .25s linear;}
+  #dialpct{margin-top:6px;font-size:12px;}
+  #enterbtn{
+    margin-top:22px;background:var(--xp-silver);border:2px outset #fff;
+    padding:6px 22px;font-weight:bold;cursor:pointer;font-size:13px;display:none;
+  }
+  #enterbtn:active{border-style:inset;}
+
+  /* ---------- WINDOW CHROME (shared) ---------- */
+  .win{
+    background:var(--xp-silver);
+    border:1px solid #0a246a;
+    box-shadow:2px 2px 8px rgba(0,0,0,.5);
+    display:flex;flex-direction:column;
+  }
+  .titlebar{
+    background:linear-gradient(180deg,#2a6cd6 0%, #1955c0 4%, #0a3fa6 40%, #0a246a 60%, #123a8f 84%, #1650b8 100%);
+    color:#fff;font-weight:bold;font-size:13px;
+    padding:3px 4px 4px 6px;display:flex;align-items:center;gap:6px;
+    border-bottom:1px solid #04123a;
+  }
+  .titlebar .icon{width:14px;height:14px;background:var(--xp-green);border-radius:50%;border:1px solid #1a5c00;flex:none;}
+  .titlebar .ttl{flex:1;text-shadow:1px 1px 1px rgba(0,0,0,.4);letter-spacing:.2px;}
+  .winbtns{display:flex;gap:2px;}
+  .winbtns span{
+    width:18px;height:16px;
+    background:linear-gradient(180deg,#f4f4f4,#c9c9c9);
+    border:1px solid #7d8fa8;border-radius:2px;font-size:10px;color:#111;
+    display:flex;align-items:center;justify-content:center;line-height:0;
+  }
+  .menubar{
+    background:var(--xp-silver);border-bottom:1px solid #b8b3a0;
+    font-size:12px;padding:2px 6px;display:flex;gap:14px;color:#222;
+  }
+  .menubar span:hover{background:var(--xp-lightblue);}
+
+  /* ---------- BUDDY LIST ---------- */
+  #buddylist{width:230px;height:430px;position:fixed;inset:0;margin:auto;z-index:20;display:none;}
+  #buddylist.show{display:flex;}
+  .bl-body{flex:1;overflow-y:auto;background:#fff;}
+  .bl-header{
+    background:linear-gradient(180deg,#fffbe0,#fff2b0);
+    border-bottom:1px solid #d8c96a;font-size:11px;color:#5a4a00;
+    padding:4px 8px;font-weight:bold;
+  }
+  .bl-group{
+    background:var(--xp-lightblue);font-size:11px;font-weight:bold;color:#0a246a;
+    padding:3px 6px;display:flex;align-items:center;gap:4px;border-bottom:1px solid #8fb3e0;
+  }
+  .bl-buddy{
+    display:flex;align-items:center;gap:6px;padding:6px 10px;font-size:12.5px;
+    cursor:pointer;border-bottom:1px solid #f0f0f0;
+  }
+  .bl-buddy:hover{background:#e6f0ff;}
+  .dot{width:9px;height:9px;border-radius:50%;flex:none;}
+  .dot.online{background:var(--xp-green);box-shadow:0 0 3px var(--xp-green);}
+  .bl-name{color:var(--link-purple);text-decoration:underline;font-weight:bold;}
+  .bl-status{color:#666;font-size:10.5px;margin-left:16px;display:block;}
+  .bl-footer{
+    font-size:10px;color:#333;background:var(--xp-silver);border-top:1px solid #b8b3a0;
+    padding:4px 8px;display:flex;justify-content:space-between;
+  }
+  .nowplaying{
+    font-size:10px;color:#0000cc;background:#fffdf0;border-top:1px solid #d8c96a;
+    padding:3px 8px;display:flex;justify-content:space-between;align-items:center;
+  }
+  .nowplaying .note{animation:blink 1s steps(1) infinite;}
+  @keyframes blink{50%{opacity:.25;}}
+  .nowplaying a{color:var(--link-purple);text-decoration:underline;cursor:pointer;}
+  @media (prefers-reduced-motion: reduce){ .nowplaying .note{animation:none;} }
+
+  /* ---------- CHAT WINDOW ---------- */
+  #chatwin{width:430px;height:480px;position:fixed;right:26px;bottom:26px;z-index:30;display:none;flex-direction:column;}
+  #chatwin.show{display:flex;}
+  .chat-toolbar{
+    display:flex;gap:6px;padding:4px 6px;background:var(--xp-silver);
+    border-bottom:1px solid #b8b3a0;
+  }
+  .chat-toolbar button{
+    background:linear-gradient(180deg,#fdfdfd,#dcdcdc);border:1px solid #8a8a8a;
+    border-radius:2px;font-size:11px;padding:2px 7px;cursor:pointer;
+  }
+  #chatlog{
+    flex:1;background:#fff;overflow-y:auto;padding:8px 10px;
+    font-family:"Times New Roman", serif;font-size:14px;line-height:1.5;
+  }
+  .msg{margin-bottom:6px;}
+  .who{font-weight:bold;}
+  .who.user{color:var(--chat-user);}
+  .who.bot{color:var(--chat-bot);}
+  .ts{color:#888;font-size:11px;font-family:Tahoma,sans-serif;margin-left:4px;}
+  .typing{color:#888;font-size:12px;font-style:italic;font-family:Tahoma,sans-serif;padding:2px 10px;}
+  .chat-inputbar{
+    border-top:2px solid #b8b3a0;background:var(--xp-silver);
+    padding:6px;display:flex;flex-direction:column;gap:6px;
+  }
+  .fmtrow{display:flex;gap:4px;}
+  .fmtrow button{
+    width:22px;height:20px;background:linear-gradient(180deg,#fdfdfd,#dcdcdc);
+    border:1px solid #8a8a8a;border-radius:2px;font-size:11px;cursor:pointer;
+  }
+  .inputrow{display:flex;gap:6px;}
+  #msgInput{
+    flex:1;height:44px;border:1px inset #888;font-family:"Times New Roman",serif;
+    font-size:14px;padding:4px;resize:none;
+  }
+  #sendBtn{
+    background:var(--xp-silver);border:2px outset #fff;padding:0 16px;font-weight:bold;
+    font-size:12px;cursor:pointer;
+  }
+  #sendBtn:active{border-style:inset;}
+  .chat-status{font-size:10px;color:#444;padding:2px 8px;background:var(--xp-silver);
+    border-top:1px solid #d8d5c8;display:flex;justify-content:space-between;}
+
+  ::-webkit-scrollbar{width:16px;}
+  ::-webkit-scrollbar-track{background:#d8d5c8;}
+  ::-webkit-scrollbar-thumb{background:linear-gradient(180deg,#f4f4f4,#c0c0c0);border:1px solid #8a8a8a;}
+
+  @media (max-width:560px){
+    #buddylist{width:92vw;height:60vh;}
+    #chatwin{width:94vw;height:66vh;right:3vw;bottom:3vw;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .bootline, #dialbar-fill{transition:none;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ================= BOOT SCREEN ================= -->
+<div id="boot">
+  <pre id="asciiTitle"> ___    _   __  __                                   
+|   |  |_| |  \/  | ___  ___ ___  ___ _ __  __ _  ___ _ __
+| | | | | | |\/| |/ _ \/ __/ __|/ _ \ '_ \/ _` |/ _ \ '__|
+| |_| | | | |  | |  __/\__ \__ \  __/ | | (_| |  __/ |
+|___/ |_|_|_|  |_|\___||___/___/\___|_| |_\__, |\___|_|
+                                            __/ |
+                                           |___/  2006 EDITION</pre>
+  <div id="bootlines"></div>
+  <div id="dialbar"><div id="dialbar-fill"></div></div>
+  <div id="dialpct">Dialing... 0%</div>
+  <button id="enterbtn">Sign On &raquo;</button>
+</div>
+
+<!-- ================= BUDDY LIST ================= -->
+<div class="win" id="buddylist">
+  <div class="titlebar">
+    <div class="icon"></div>
+    <div class="ttl">jordan_2k6 &mdash; AI Messenger</div>
+    <div class="winbtns"><span>_</span><span>&#9633;</span><span>&times;</span></div>
+  </div>
+  <div class="menubar"><span>File</span><span>Edit</span><span>People</span><span>Actions</span><span>Help</span></div>
+  <div class="bl-header">jordan_2k6 <span style="font-weight:normal;">(Available)</span></div>
+  <div class="bl-body">
+    <div class="bl-group">&#9660; Buddies (1/1)</div>
+    <div class="bl-buddy" id="openChat">
+      <span class="dot online"></span>
+      <div>
+        <span class="bl-name">ClaudeBot98</span>
+        <span class="bl-status">Active now &mdash; "brb, thinking..."</span>
+      </div>
+    </div>
+    <div class="bl-group">&#9660; Offline (0)</div>
+  </div>
+  <div class="bl-footer">
+    <span id="visitCounter">Visitors: 000001</span>
+    <span>Last modified 03/14/2006</span>
+  </div>
+  <div class="nowplaying">
+    <span><span class="note">&#9834;</span> Now Playing: ai_messenger_theme.mid</span>
+    <a id="musicToggle">[turn off music]</a>
+  </div>
+</div>
+
+<!-- ================= CHAT WINDOW ================= -->
+<div class="win" id="chatwin">
+  <div class="titlebar">
+    <div class="icon"></div>
+    <div class="ttl">IM with ClaudeBot98</div>
+    <div class="winbtns"><span>_</span><span>&#9633;</span><span id="closeChat">&times;</span></div>
+  </div>
+  <div class="menubar"><span>File</span><span>Edit</span><span>Insert</span><span>People</span></div>
+  <div class="chat-toolbar">
+    <button title="not wired up, just for the vibe">Font</button>
+    <button title="not wired up, just for the vibe">Color</button>
+    <button title="not wired up, just for the vibe">Smiley</button>
+    <button title="not wired up, just for the vibe">Buzz!</button>
+  </div>
+  <div id="chatlog"></div>
+  <div id="typingIndicator" class="typing" style="display:none;">ClaudeBot98 is typing<span id="dots">.</span></div>
+  <div class="chat-inputbar">
+    <div class="fmtrow">
+      <button title="Bold"><b>B</b></button>
+      <button title="Italic"><i>I</i></button>
+      <button title="Underline"><u>U</u></button>
+    </div>
+    <div class="inputrow">
+      <textarea id="msgInput" placeholder="Type your IM here..."></textarea>
+      <button id="sendBtn">Send</button>
+    </div>
+  </div>
+  <div class="chat-status">
+    <span>Direct Connection</span>
+    <span id="pingStat">Idle</span>
+  </div>
+</div>
+
+<script>
+// ---------------- BOOT SEQUENCE ----------------
+const bootLinesText = [
+  "AI MESSENGER DIALER v1.2",
+  "Initializing modem on COM3... OK",
+  "Detecting carrier tone............ 33.6 kbps",
+  "Negotiating handshake with server...",
+  "  ATDT 1-800-CLAUDE-AI",
+  "  CONNECT 33600",
+  "Authenticating buddy list credentials...",
+  "Loading buddy icons... done",
+  "Checking for new IMs.......... 1 new buddy online",
+];
+const bootLinesEl = document.getElementById('bootlines');
+const fill = document.getElementById('dialbar-fill');
+const pct = document.getElementById('dialpct');
+const enterBtn = document.getElementById('enterbtn');
+
+let i = 0;
+function showNextLine(){
+  if(i < bootLinesText.length){
+    const div = document.createElement('div');
+    div.className = 'bootline';
+    div.textContent = bootLinesText[i];
+    if(i>0) div.classList.add('ok');
+    bootLinesEl.appendChild(div);
+    requestAnimationFrame(()=>div.classList.add('show'));
+    i++;
+    setTimeout(showNextLine, 260);
+  }
+}
+showNextLine();
+
+let p = 0;
+const dialInterval = setInterval(()=>{
+  p += Math.floor(Math.random()*9)+3;
+  if(p>=100){ p=100; clearInterval(dialInterval); enterBtn.style.display='inline-block'; }
+  fill.style.width = p+'%';
+  pct.textContent = 'Dialing... ' + p + '%' + (p>=100 ? '  — Connected at 33.6kbps' : '');
+}, 220);
+
+enterBtn.addEventListener('click', ()=>{
+  document.getElementById('boot').style.display = 'none';
+  document.getElementById('buddylist').classList.add('show');
+  startTheme();
+});
+
+// ---------------- SYNTHESIZED "MIDI" BACKGROUND THEME ----------------
+// Original composition, generated live with the Web Audio API — no external
+// audio file, zero copyright exposure. Only starts after the Sign On click
+// (a real user gesture), which also satisfies browser autoplay policy.
+let actx = null;
+let themeTimer = null;
+let musicOn = true;
+let stepCount = 0;
+
+// Original 16-step melody (C major, cheerful/nostalgic, not any existing song)
+const melody = [
+  523.25, 0,      659.25, 523.25,   587.33, 0,      783.99, 0,
+  659.25, 0,      523.25, 587.33,   493.88, 0,      440.00, 0
+]; // C5 . E5 C5 | D5 . G5 . | E5 . C5 D5 | B4 . A4 .
+// Simple root-note bassline underneath, one note per 2 steps
+const bass = [130.81, 130.81, 174.61, 174.61, 196.00, 196.00, 174.61, 130.81]; // C3 C3 F3 F3 G3 G3 F3 C3
+
+let delayNode, feedbackGain, masterGain;
+
+function initAudioGraph(){
+  masterGain = actx.createGain();
+  masterGain.gain.value = 0.06;
+  delayNode = actx.createDelay();
+  delayNode.delayTime.value = 0.22;
+  feedbackGain = actx.createGain();
+  feedbackGain.gain.value = 0.18; // gentle echo, not a wall of reverb
+  delayNode.connect(feedbackGain);
+  feedbackGain.connect(delayNode);
+  masterGain.connect(delayNode);
+  delayNode.connect(actx.destination);
+  masterGain.connect(actx.destination);
+}
+
+function playTone(freq, time, dur, type, gainLevel){
+  if(!freq) return; // rest
+  const osc = actx.createOscillator();
+  const g = actx.createGain();
+  osc.type = type;
+  osc.frequency.value = freq;
+  g.gain.setValueAtTime(0.0001, time);
+  g.gain.exponentialRampToValueAtTime(gainLevel, time + 0.015);
+  g.gain.exponentialRampToValueAtTime(0.0001, time + dur);
+  osc.connect(g).connect(masterGain);
+  osc.start(time);
+  osc.stop(time + dur + 0.03);
+}
+
+function playHat(time){
+  const bufferSize = actx.sampleRate * 0.03;
+  const buffer = actx.createBuffer(1, bufferSize, actx.sampleRate);
+  const data = buffer.getChannelData(0);
+  for(let i=0;i<bufferSize;i++){ data[i] = (Math.random()*2-1) * (1 - i/bufferSize); }
+  const noise = actx.createBufferSource();
+  noise.buffer = buffer;
+  const hg = actx.createGain();
+  hg.gain.value = 0.025;
+  const hp = actx.createBiquadFilter();
+  hp.type = 'highpass'; hp.frequency.value = 6000;
+  noise.connect(hp).connect(hg).connect(masterGain);
+  noise.start(time);
+}
+
+function startTheme(){
+  if(!musicOn) return;
+  try{
+    actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+    if(!masterGain) initAudioGraph();
+    if(actx.state === 'suspended') actx.resume();
+    const stepTime = 0.185; // ~130bpm eighth notes
+    themeTimer = setInterval(()=>{
+      if(!musicOn) return;
+      const now = actx.currentTime;
+      const step = stepCount % melody.length;
+      playTone(melody[step], now, stepTime * 0.9, 'square', 0.05);
+      if(step % 2 === 0) playTone(bass[(step/2)|0], now, stepTime * 1.8, 'triangle', 0.06);
+      if(step % 2 === 1) playHat(now);
+      stepCount++;
+    }, stepTime * 1000);
+  }catch(e){ console.warn('Web Audio not available:', e); }
+}
+
+function stopTheme(){
+  clearInterval(themeTimer);
+  if(actx) actx.suspend();
+}
+
+document.getElementById('musicToggle').addEventListener('click', (e)=>{
+  musicOn = !musicOn;
+  e.target.textContent = musicOn ? '[turn off music]' : '[turn on music]';
+  if(musicOn){ startTheme(); } else { stopTheme(); }
+});
+
+// ---------------- BUDDY LIST -> CHAT ----------------
+const buddylist = document.getElementById('buddylist');
+const chatwin = document.getElementById('chatwin');
+document.getElementById('openChat').addEventListener('click', ()=>{
+  chatwin.classList.add('show');
+  if(chatlog.children.length===0){
+    pushMsg('bot', "heyyy! its ur AI buddy from the future lol. ask me anything (yes this really works, its a real AI)");
+  }
+});
+document.getElementById('closeChat').addEventListener('click', ()=>{
+  chatwin.classList.remove('show');
+});
+
+// ---------------- VISITOR COUNTER (Y2K hit-counter style) ----------------
+// window.storage only exists inside Claude's preview sandbox. On the real
+// deployment we fall back to a per-device localStorage counter so the number
+// still ticks up believably instead of silently breaking.
+(async ()=>{
+  const el = document.getElementById('visitCounter');
+  let count = null;
+  try{
+    const res = await window.storage.get('visitor_count', true);
+    count = (parseInt(res.value, 10) || 0) + 1;
+    await window.storage.set('visitor_count', String(count), true);
+  }catch(e){
+    try{
+      count = (parseInt(localStorage.getItem('cb98_visits'), 10) || 1336) + 1;
+      localStorage.setItem('cb98_visits', String(count));
+    }catch(e2){
+      count = 1337;
+    }
+  }
+  el.textContent = 'Visitors: ' + String(count).padStart(6,'0');
+})();
+
+// ---------------- CHAT LOGIC ----------------
+const chatlog = document.getElementById('chatlog');
+const msgInput = document.getElementById('msgInput');
+const sendBtn = document.getElementById('sendBtn');
+const typingIndicator = document.getElementById('typingIndicator');
+const pingStat = document.getElementById('pingStat');
+
+let history = [];
+
+function ts(){
+  const d = new Date();
+  return '(' + d.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}) + ')';
+}
+
+function pushMsg(who, text){
+  const div = document.createElement('div');
+  div.className = 'msg';
+  const label = who === 'user' ? 'jordan_2k6' : 'ClaudeBot98';
+  div.innerHTML = '<span class="who ' + who + '">' + label + ':</span> ' + escapeHtml(text) + ' <span class="ts">' + ts() + '</span>';
+  chatlog.appendChild(div);
+  chatlog.scrollTop = chatlog.scrollHeight;
+}
+
+function escapeHtml(s){
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+let dotAnim;
+function startTyping(){
+  typingIndicator.style.display = 'block';
+  pingStat.textContent = 'Sending...';
+  let n = 1;
+  dotAnim = setInterval(()=>{
+    n = (n % 3) + 1;
+    document.getElementById('dots').textContent = '.'.repeat(n);
+  }, 400);
+}
+function stopTyping(){
+  typingIndicator.style.display = 'none';
+  clearInterval(dotAnim);
+  pingStat.textContent = 'Idle';
+}
+
+async function sendMessage(){
+  const text = msgInput.value.trim();
+  if(!text) return;
+  pushMsg('user', text);
+  history.push({role:'user', content:text});
+  msgInput.value = '';
+  startTyping();
+
+  try{
+    // Calls our own serverless proxy (api/chat.js) — the real model API key
+    // lives server-side, never in this file.
+    const response = await fetch("/api/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ messages: history })
+    });
+    if(!response.ok) throw new Error('proxy returned ' + response.status);
+    const data = await response.json();
+    if(!data.reply) throw new Error('empty reply from proxy');
+    stopTyping();
+    pushMsg('bot', data.reply);
+    history.push({role:'assistant', content:data.reply});
+  }catch(err){
+    stopTyping();
+    pushMsg('bot', "*connection lost* ...ur message didn't send, the modem might've dropped carrier. try again in a sec.");
+    console.error(err);
+  }
+}
+
+sendBtn.addEventListener('click', sendMessage);
+msgInput.addEventListener('keydown', (e)=>{
+  if(e.key === 'Enter' && !e.shiftKey){
+    e.preventDefault();
+    sendMessage();
+  }
+});
+</script>
+</body>
+</html>
