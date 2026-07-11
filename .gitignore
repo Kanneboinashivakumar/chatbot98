@@ -2,5 +2,4 @@
 .env.local
 .vercel
 node_modules
-
-.vercel
+capture_screenshot.js
