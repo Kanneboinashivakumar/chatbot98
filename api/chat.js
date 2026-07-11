@@ -27,8 +27,10 @@ export default async function handler(req, res) {
 
   const key = process.env.FIREWORKS_API_KEY;
   if (!key) {
-    // Deploy misconfiguration — never leak details to the client.
-    return res.status(500).json({ error: "server_not_configured" });
+    return res.status(500).json({ 
+      error: "server_not_configured",
+      details: "FIREWORKS_API_KEY env var is missing on Vercel. Please set it in Vercel Settings -> Environment Variables, and then trigger a new deployment/redeploy so the key is loaded."
+    });
   }
 
   const body = req.body || {};
