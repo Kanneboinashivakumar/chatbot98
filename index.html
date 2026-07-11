@@ -200,7 +200,7 @@
     <div class="bl-buddy" id="openChat">
       <span class="dot online"></span>
       <div>
-        <span class="bl-name">ClaudeBot98</span>
+        <span class="bl-name">ChatBot98</span>
         <span class="bl-status">Active now &mdash; "brb, thinking..."</span>
       </div>
     </div>
@@ -227,7 +227,7 @@
 <div class="win" id="chatwin">
   <div class="titlebar">
     <div class="icon"></div>
-    <div class="ttl">IM with ClaudeBot98</div>
+    <div class="ttl">IM with ChatBot98</div>
     <div class="winbtns"><span>_</span><span>&#9633;</span><span id="closeChat">&times;</span></div>
   </div>
   <div class="menubar"><span>File</span><span>Edit</span><span>Insert</span><span>People</span></div>
@@ -238,7 +238,7 @@
     <button title="not wired up, just for the vibe">Buzz!</button>
   </div>
   <div id="chatlog"></div>
-  <div id="typingIndicator" class="typing" style="display:none;">ClaudeBot98 is typing<span id="dots">.</span></div>
+  <div id="typingIndicator" class="typing" style="display:none;">ChatBot98 is typing<span id="dots">.</span></div>
   <div class="chat-inputbar">
     <div class="fmtrow">
       <button title="Bold"><b>B</b></button>
@@ -508,7 +508,7 @@ function ts(){
 function pushMsg(who, text){
   const div = document.createElement('div');
   div.className = 'msg';
-  const label = who === 'user' ? 'jordan_2k6' : 'ClaudeBot98';
+  const label = who === 'user' ? 'jordan_2k6' : 'ChatBot98';
   div.innerHTML = '<span class="who ' + who + '">' + label + ':</span> ' + escapeHtml(text) + ' <span class="ts">' + ts() + '</span>';
   chatlog.appendChild(div);
   chatlog.scrollTop = chatlog.scrollHeight;

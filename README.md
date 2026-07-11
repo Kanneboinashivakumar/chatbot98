@@ -1,10 +1,10 @@
-# AI Messenger 2006 — ClaudeBot98
+# AI Messenger 2006 — ChatBot98
 
 A genuinely capable modern AI chatbot, reimagined as an experimental buddy on AIM/MSN Messenger — as if it had launched in 2006.
 
 ## The concept
 
-RIFT 2026, Problem Statement 1: reimagine a modern app as if it launched in 2006. We chose the AI chatbot — the defining app of the 2020s — because it is the one modern product that most obviously *couldn't* have existed in 2006, which makes imagining it there the most interesting version of the prompt. In 2006, "chatting with a bot" meant SmarterChild: canned replies, no memory, novelty over utility. ClaudeBot98 asks what it would have felt like if the real thing had quietly shown up on your buddy list.
+RIFT 2026, Problem Statement 1: reimagine a modern app as if it launched in 2006. We chose the AI chatbot — the defining app of the 2020s — because it is the one modern product that most obviously *couldn't* have existed in 2006, which makes imagining it there the most interesting version of the prompt. In 2006, "chatting with a bot" meant SmarterChild: canned replies, no memory, novelty over utility. ChatBot98 asks what it would have felt like if the real thing had quietly shown up on your buddy list.
 
 The core idea is that the AI underneath is real and fully functional, but it wears the UI, constraints, and personality of mid-2000s chat software. It doesn't stream tokens — 2006 chat clients couldn't render partial text, so you get a typing indicator instead, the way AIM actually worked. It replies briefly and casually, in period voice. The boot sequence dials up. The point is not a retro skin bolted onto a chat app; it's a period-accurate messenger experience that happens to have a modern brain.
 
@@ -52,7 +52,7 @@ Fonts: **Tahoma** for all window chrome (the actual XP system font), **Times New
 
 ```
 git clone <repo-url>
-cd claudebot98
+cd chatbot98
 npm i -g vercel          # only dependency; the app itself has none
 vercel dev
 ```

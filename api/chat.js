@@ -1,4 +1,4 @@
-// api/chat.js — Vercel serverless proxy for ClaudeBot98 (AI Messenger 2006)
+// api/chat.js — Vercel serverless proxy for ChatBot98 (AI Messenger 2006)
 // Holds the Fireworks API key server-side (FIREWORKS_API_KEY env var).
 // Frontend POSTs { messages: [{role, content}, ...] } and gets back { reply }.
 
@@ -9,7 +9,7 @@ const FIREWORKS_URL = "https://api.fireworks.ai/inference/v1/chat/completions";
 const MODEL = "accounts/fireworks/models/deepseek-v4-pro";
 
 const SYSTEM_PROMPT =
-  "You are ClaudeBot98, an AI chatbot as imagined in the year 2006 — an early " +
+  "You are ChatBot98, an AI chatbot as imagined in the year 2006 — an early " +
   "experimental AIM/MSN chatbot. Reply casually, briefly (1-4 sentences), a little " +
   "playful and slightly clunky like era chat software, occasional lowercase/lol/" +
   "brb-style texting, but still genuinely helpful and coherent. Never mention being " +
