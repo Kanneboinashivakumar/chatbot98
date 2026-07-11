@@ -349,7 +349,8 @@ function playTone(freq, time, dur, type, gainLevel){
   g.gain.setValueAtTime(0.0001, time);
   g.gain.exponentialRampToValueAtTime(gainLevel, time + 0.015);
   g.gain.exponentialRampToValueAtTime(0.0001, time + dur);
-  osc.connect(g).connect(masterGain);
+  osc.connect(g);
+  g.connect(masterGain);
   osc.start(time);
   osc.stop(time + dur + 0.03);
 }
@@ -365,7 +366,9 @@ function playHat(time){
   hg.gain.value = 0.025;
   const hp = actx.createBiquadFilter();
   hp.type = 'highpass'; hp.frequency.value = 6000;
-  noise.connect(hp).connect(hg).connect(masterGain);
+  noise.connect(hp);
+  hp.connect(hg);
+  hg.connect(masterGain);
   noise.start(time);
 }
 
@@ -415,7 +418,8 @@ function playSignOnSound() {
       g.gain.linearRampToValueAtTime(0.05, startTime + 0.015);
       g.gain.exponentialRampToValueAtTime(0.0001, startTime + dur);
       
-      osc.connect(g).connect(actx.destination);
+      osc.connect(g);
+      g.connect(actx.destination);
       osc.start(startTime);
       osc.stop(startTime + dur + 0.02);
     });
@@ -441,7 +445,8 @@ function playMessageSound() {
     g.gain.linearRampToValueAtTime(0.07, now + 0.01);
     g.gain.exponentialRampToValueAtTime(0.0001, now + 0.14);
     
-    osc.connect(g).connect(actx.destination);
+    osc.connect(g);
+    g.connect(actx.destination);
     osc.start(now);
     osc.stop(now + 0.16);
   } catch (e) {
