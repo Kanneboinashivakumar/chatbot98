@@ -560,6 +560,49 @@
     font-weight: bold;
   }
 
+  .shortcut {
+    padding: 6px;
+    border-radius: 4px;
+    transition: background 0.2s;
+    user-select: none;
+  }
+  .shortcut:hover {
+    background: rgba(255,255,255,0.15);
+  }
+  body.theme-cyber .shortcut {
+    color: #00ffcc;
+    text-shadow: 0 0 5px #00ffcc;
+  }
+  body.theme-cyber .shortcut:hover {
+    background: rgba(191,0,255,0.2);
+    box-shadow: 0 0 8px #bf00ff;
+  }
+  body.theme-xp .shortcut {
+    color: #fff;
+  }
+  
+  .titlebar {
+    cursor: move;
+  }
+
+  /* CRT TV Scanline & Flicker Overlay */
+  #boot::after {
+    content: " ";
+    display: block;
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+    z-index: 105;
+    background-size: 100% 3px, 6px 100%;
+    pointer-events: none;
+    animation: crtFlicker 0.15s infinite;
+  }
+  @keyframes crtFlicker {
+    0% { opacity: 0.98; }
+    50% { opacity: 1; }
+    100% { opacity: 0.98; }
+  }
+
   @media (max-width:560px){
     #buddylist{width:92vw;height:60vh;left:4vw;top:4vw;}
     #chatwin{width:94vw;height:66vh;right:3vw;bottom:48px;}
@@ -592,6 +635,26 @@
     <div id="dialbar"><div id="dialbar-fill"></div></div>
     <div id="dialpct">Dialing... 0%</div>
     
+    <!-- Modem status LEDs -->
+    <div class="modem-lights" style="display: flex; gap: 14px; margin-top: 14px; background: #121622; padding: 6px 16px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.15); z-index: 10;">
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 2px;">
+        <span class="led pwr active" style="width: 8px; height: 8px; border-radius: 50%; background: #3ad900; box-shadow: 0 0 6px #3ad900;"></span>
+        <span style="font-size: 8px; color: #888; font-weight: bold; font-family: monospace;">PWR</span>
+      </div>
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 2px;">
+        <span class="led oh" id="led-oh" style="width: 8px; height: 8px; border-radius: 50%; background: #222; transition: background 0.1s;"></span>
+        <span style="font-size: 8px; color: #888; font-weight: bold; font-family: monospace;">OH</span>
+      </div>
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 2px;">
+        <span class="led txrx" id="led-txrx" style="width: 8px; height: 8px; border-radius: 50%; background: #222;"></span>
+        <span style="font-size: 8px; color: #888; font-weight: bold; font-family: monospace;">SD/RD</span>
+      </div>
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 2px;">
+        <span class="led cd" id="led-cd" style="width: 8px; height: 8px; border-radius: 50%; background: #222; transition: background 0.2s;"></span>
+        <span style="font-size: 8px; color: #888; font-weight: bold; font-family: monospace;">CD</span>
+      </div>
+    </div>
+    
     <div class="boot-theme-select">
       <div style="font-size: 10px; letter-spacing: 1px; color: #888; margin-bottom: 6px;">SELECT DESKTOP SKIN</div>
       <div style="display: flex; gap: 8px; justify-content: center;">
@@ -602,6 +665,141 @@
     </div>
     
     <button id="enterbtn">Sign On &raquo;</button>
+  </div>
+</div>
+
+<!-- ================= DESKTOP SHORTCUTS ================= -->
+<div id="desktop-shortcuts" style="position: absolute; left: 24px; top: 24px; display: none; flex-direction: column; gap: 22px; z-index: 5; font-size: 11px; color: #fff; text-shadow: 1px 1px 2px #000; text-align: center;">
+  <div class="shortcut" onclick="toggleWindow('chatwin')" style="cursor: pointer; width: 64px; display: flex; flex-direction: column; align-items: center; gap: 4px;">
+    <div style="font-size: 28px; filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.3));">🤖</div>
+    <div style="font-weight: bold;">ChatGPT Portal</div>
+  </div>
+  <div class="shortcut" onclick="openRecycleBin()" style="cursor: pointer; width: 64px; display: flex; flex-direction: column; align-items: center; gap: 4px;">
+    <div id="trash-icon" style="font-size: 28px; filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.3));">🗑️</div>
+    <div style="font-weight: bold;">Recycle Bin</div>
+  </div>
+  <div class="shortcut" onclick="openSystemInfo()" style="cursor: pointer; width: 64px; display: flex; flex-direction: column; align-items: center; gap: 4px;">
+    <div style="font-size: 28px; filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.3));">💻</div>
+    <div style="font-weight: bold;">My Computer</div>
+  </div>
+  <div class="shortcut" onclick="openWebring()" style="cursor: pointer; width: 64px; display: flex; flex-direction: column; align-items: center; gap: 4px;">
+    <div style="font-size: 28px; filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.3));">🌐</div>
+    <div style="font-weight: bold;">Retro Webring</div>
+  </div>
+</div>
+
+<!-- ================= RECYCLE BIN WINDOW ================= -->
+<div class="win" id="win-trash" style="width: 320px; height: 260px; position: fixed; left: 150px; top: 150px; display: none; flex-direction: column;">
+  <div class="titlebar">
+    <div class="icon">🗑️</div>
+    <div class="ttl">Recycle Bin</div>
+    <div class="winbtns">
+      <span onclick="toggleWindow('win-trash')">_</span>
+      <span>&#9633;</span>
+      <span onclick="closeWindow('win-trash')">&times;</span>
+    </div>
+  </div>
+  <div class="menubar">
+    <span onclick="emptyTrash()">Empty Bin</span>
+    <span>Properties</span>
+  </div>
+  <div class="bl-body" style="padding: 10px; font-size: 12px; display: flex; flex-direction: column; gap: 8px;">
+    <div id="trash-empty-msg" style="display: none; color: #888; text-align: center; margin-top: 50px;">This folder is empty.</div>
+    <table id="trash-table" style="width: 100%; border-collapse: collapse; text-align: left;">
+      <thead>
+        <tr style="border-bottom: 1px solid rgba(0,0,0,0.15);">
+          <th>Name</th>
+          <th>Size</th>
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="height: 24px;">
+          <td>Internet Explorer 6.0.lnk</td>
+          <td>1 KB</td>
+          <td>Shortcut</td>
+        </tr>
+        <tr style="height: 24px;">
+          <td>dialup_earrape.wav</td>
+          <td>4.2 MB</td>
+          <td>Sound Wave</td>
+        </tr>
+        <tr style="height: 24px;">
+          <td>myspace_layout_backup.txt</td>
+          <td>12 KB</td>
+          <td>Text Document</td>
+        </tr>
+        <tr style="height: 24px;">
+          <td>napster_installer.exe</td>
+          <td>1.8 MB</td>
+          <td>Application</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ================= SYSTEM INFO WINDOW ================= -->
+<div class="win" id="win-sysinfo" style="width: 340px; height: 280px; position: fixed; left: 200px; top: 200px; display: none; flex-direction: column;">
+  <div class="titlebar">
+    <div class="icon">💻</div>
+    <div class="ttl">System Properties</div>
+    <div class="winbtns">
+      <span onclick="toggleWindow('win-sysinfo')">_</span>
+      <span>&#9633;</span>
+      <span onclick="closeWindow('win-sysinfo')">&times;</span>
+    </div>
+  </div>
+  <div class="bl-body" style="padding: 12px; font-size: 12px; display: flex; flex-direction: column; gap: 10px;">
+    <div style="font-weight: bold; border-bottom: 1px solid rgba(0,0,0,0.15); padding-bottom: 4px;">System Specifications</div>
+    <div style="display: flex; flex-direction: column; gap: 6px;">
+      <div><strong>Computer:</strong> ChatBot98 Personal Computer</div>
+      <div><strong>Processor:</strong> Fireworks AI Dual-Core Quantum CPU @ 4.20 GHz</div>
+      <div><strong>Memory:</strong> 128 MB of SDRAM (Y2K Chiptune Optimized)</div>
+      <div><strong>Graphics Card:</strong> NVIDIA RIVA TNT2 M64 (32MB VRAM)</div>
+      <div><strong>Operating System:</strong> ChatBot98 Professional (Build 2006.Aero)</div>
+      <div><strong>DirectX:</strong> version 9.0c (August 2006)</div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= RETRO WEBRING WINDOW ================= -->
+<div class="win" id="win-webring" style="width: 360px; height: 320px; position: fixed; left: 100px; top: 220px; display: none; flex-direction: column;">
+  <div class="titlebar">
+    <div class="icon">🌐</div>
+    <div class="ttl">Retro Webring Explorer</div>
+    <div class="winbtns">
+      <span onclick="toggleWindow('win-webring')">_</span>
+      <span>&#9633;</span>
+      <span onclick="closeWindow('win-webring')">&times;</span>
+    </div>
+  </div>
+  <div class="bl-body" style="padding: 12px; font-size: 12px; overflow-y: auto;">
+    <div style="margin-bottom: 12px; line-height: 1.4;">
+      Welcome to the <strong>2006 Webring</strong>! These retro portals were hand-selected as ultimate styling guides for this hackathon:
+    </div>
+    <ul style="padding-left: 20px; display: flex; flex-direction: column; gap: 8px; margin: 0;">
+      <li>
+        <a href="https://www.cameronsworld.net/" target="_blank" style="color: var(--link-purple); font-weight: bold;">Cameron's World</a><br>
+        <span style="color: #666; font-size: 11px;">A stunning archive of GeoCities pages with retro GIFs and tiling wallpapers.</span>
+      </li>
+      <li>
+        <a href="https://melonking.net/melon" target="_blank" style="color: var(--link-purple); font-weight: bold;">MelonLand Explorer</a><br>
+        <span style="color: #666; font-size: 11px;">A hand-built website world, guestbooks, retro-web revival, and pixel art graphics.</span>
+      </li>
+      <li>
+        <a href="https://bedr00mz.neocities.org/" target="_blank" style="color: var(--link-purple); font-weight: bold;">Bedr00mz</a><br>
+        <span style="color: #666; font-size: 11px;">Nostalgic digital room simulator featuring 2000s themes and aesthetic collections.</span>
+      </li>
+      <li>
+        <a href="https://killing-machine.neocities.org/" target="_blank" style="color: var(--link-purple); font-weight: bold;">Killing Machine</a><br>
+        <span style="color: #666; font-size: 11px;">High-intensity retro techcore/cybercore design styling with dark neon interfaces.</span>
+      </li>
+      <li>
+        <a href="https://olliveen.neocities.org/" target="_blank" style="color: var(--link-purple); font-weight: bold;">Olliveen</a><br>
+        <span style="color: #666; font-size: 11px;">Another retro neocities site featuring bubblegum and bling aesthetics.</span>
+      </li>
+    </ul>
   </div>
 </div>
 
@@ -701,6 +899,18 @@
       <span class="task-icon chat"></span>
       <span class="task-title">IM with ChatBot98</span>
     </div>
+    <div class="task-btn" id="task-win-trash" style="display:none;" onclick="toggleWindow('win-trash')">
+      <span class="task-icon">🗑️</span>
+      <span class="task-title">Recycle Bin</span>
+    </div>
+    <div class="task-btn" id="task-win-sysinfo" style="display:none;" onclick="toggleWindow('win-sysinfo')">
+      <span class="task-icon">💻</span>
+      <span class="task-title">System Properties</span>
+    </div>
+    <div class="task-btn" id="task-win-webring" style="display:none;" onclick="toggleWindow('win-webring')">
+      <span class="task-icon">🌐</span>
+      <span class="task-title">Retro Webring Explorer</span>
+    </div>
   </div>
   <div id="systray">
     <span class="systray-icon" title="Connected via 33.6kbps Modem">🔌</span>
@@ -743,15 +953,38 @@ function showNextLine(){
 showNextLine();
 
 let p = 0;
+const ledOh = document.getElementById('led-oh');
+const ledTxrx = document.getElementById('led-txrx');
+const ledCd = document.getElementById('led-cd');
+
 const dialInterval = setInterval(()=>{
   p += Math.floor(Math.random()*9)+3;
-  if(p>=100){ p=100; clearInterval(dialInterval); enterBtn.style.display='inline-block'; }
+  if(p>=100){ 
+    p=100; 
+    clearInterval(dialInterval); 
+    enterBtn.style.display='inline-block';
+    
+    // LEDs post-connection
+    if (ledOh) ledOh.style.background = '#ff3300';
+    if (ledTxrx) ledTxrx.style.background = '#222';
+    if (ledCd) {
+      ledCd.style.background = '#3ad900';
+      ledCd.style.boxShadow = '0 0 6px #3ad900';
+    }
+  } else {
+    // Blinking lights during handshake
+    if (ledOh) ledOh.style.background = '#ff3300';
+    if (ledTxrx) {
+      const active = Math.random() > 0.5;
+      ledTxrx.style.background = active ? '#f0a30a' : '#222';
+      ledTxrx.style.boxShadow = active ? '0 0 6px #f0a30a' : 'none';
+    }
+  }
   fill.style.width = p+'%';
   pct.textContent = 'Dialing... ' + p + '%' + (p>=100 ? '  — Connected at 33.6kbps' : '');
 }, 220);
 
 enterBtn.addEventListener('click', ()=>{
-  // Add CSS fade-out class to boot screen for smooth transition
   const bootEl = document.getElementById('boot');
   bootEl.classList.add('fade-out');
   setTimeout(() => {
@@ -760,6 +993,7 @@ enterBtn.addEventListener('click', ()=>{
   
   document.getElementById('buddylist').style.display = 'flex';
   document.getElementById('buddylist').classList.add('show');
+  document.getElementById('desktop-shortcuts').style.display = 'flex';
   
   // Create and unlock AudioContext synchronously
   actx = actx || new (window.AudioContext || window.webkitAudioContext)();
@@ -774,6 +1008,13 @@ enterBtn.addEventListener('click', ()=>{
   
   // Start canvas visualizer loop
   drawVisualizer();
+  
+  // Initialize draggable windows
+  makeDraggable(document.getElementById('buddylist'));
+  makeDraggable(document.getElementById('chatwin'));
+  makeDraggable(document.getElementById('win-trash'));
+  makeDraggable(document.getElementById('win-sysinfo'));
+  makeDraggable(document.getElementById('win-webring'));
 });
 
 // ---------------- SYNTHESIZED "MIDI" BACKGROUND THEME ----------------
@@ -798,7 +1039,7 @@ let delayNode, feedbackGain, masterGain;
 let analyser;
 function initAudioGraph(){
   masterGain = actx.createGain();
-  masterGain.gain.value = 0.06;
+  masterGain.gain.value = 0.38; // Raised from 0.06 to 0.38 so background music is clearly audible!
   
   // Set up visualizer analyser node
   analyser = actx.createAnalyser();
@@ -1284,8 +1525,153 @@ function bringToFront(win) {
   win.style.zIndex = maxZ;
 }
 
-document.getElementById('buddylist').addEventListener('mousedown', () => bringToFront(document.getElementById('buddylist')));
-document.getElementById('chatwin').addEventListener('mousedown', () => bringToFront(document.getElementById('chatwin')));
+function closeWindow(id) {
+  const win = document.getElementById(id);
+  win.style.display = 'none';
+  win.classList.remove('show');
+  const taskBtn = document.getElementById('task-' + id);
+  if (taskBtn) {
+    taskBtn.style.display = 'none';
+    taskBtn.classList.remove('active');
+  }
+}
+
+function openRecycleBin() {
+  const win = document.getElementById('win-trash');
+  win.style.display = 'flex';
+  win.classList.add('show');
+  win.classList.remove('minimized');
+  const taskBtn = document.getElementById('task-win-trash');
+  if (taskBtn) {
+    taskBtn.style.display = 'flex';
+    taskBtn.classList.add('active');
+  }
+  bringToFront(win);
+}
+
+function openSystemInfo() {
+  const win = document.getElementById('win-sysinfo');
+  win.style.display = 'flex';
+  win.classList.add('show');
+  win.classList.remove('minimized');
+  const taskBtn = document.getElementById('task-win-sysinfo');
+  if (taskBtn) {
+    taskBtn.style.display = 'flex';
+    taskBtn.classList.add('active');
+  }
+  bringToFront(win);
+}
+
+function openWebring() {
+  const win = document.getElementById('win-webring');
+  win.style.display = 'flex';
+  win.classList.add('show');
+  win.classList.remove('minimized');
+  const taskBtn = document.getElementById('task-win-webring');
+  if (taskBtn) {
+    taskBtn.style.display = 'flex';
+    taskBtn.classList.add('active');
+  }
+  bringToFront(win);
+}
+
+function emptyTrash() {
+  document.getElementById('trash-table').style.display = 'none';
+  document.getElementById('trash-empty-msg').style.display = 'block';
+  document.getElementById('trash-icon').textContent = '🗑️'; // Empty bin emoji
+  playTrashSound();
+}
+
+function playTrashSound() {
+  try {
+    if (!actx) return;
+    const now = actx.currentTime;
+    const bufferSize = actx.sampleRate * 0.25; // 250ms
+    const buffer = actx.createBuffer(1, bufferSize, actx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) {
+      data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / bufferSize, 2);
+    }
+    const noise = actx.createBufferSource();
+    noise.buffer = buffer;
+    
+    const filter = actx.createBiquadFilter();
+    filter.type = 'lowpass';
+    filter.frequency.value = 400;
+    
+    const gainNode = actx.createGain();
+    gainNode.gain.setValueAtTime(0.12, now);
+    gainNode.gain.exponentialRampToValueAtTime(0.0001, now + 0.24);
+    
+    noise.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(actx.destination);
+    
+    noise.start(now);
+  } catch (e) {
+    console.warn('Trash sound failed:', e);
+  }
+}
+
+function makeDraggable(win) {
+  const titlebar = win.querySelector('.titlebar');
+  if (!titlebar) return;
+  
+  let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+  titlebar.onmousedown = dragMouseDown;
+  titlebar.ontouchstart = dragTouchStart;
+  
+  function dragMouseDown(e) {
+    e = e || window.event;
+    if (e.target.tagName === 'SPAN' || e.target.tagName === 'BUTTON') return;
+    e.preventDefault();
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    document.onmouseup = closeDragElement;
+    document.onmousemove = elementDrag;
+    bringToFront(win);
+  }
+  
+  function elementDrag(e) {
+    e = e || window.event;
+    e.preventDefault();
+    pos1 = pos3 - e.clientX;
+    pos2 = pos4 - e.clientY;
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    win.style.top = (win.offsetTop - pos2) + "px";
+    win.style.left = (win.offsetLeft - pos1) + "px";
+    win.style.margin = "0";
+  }
+  
+  function dragTouchStart(e) {
+    if (e.target.tagName === 'SPAN' || e.target.tagName === 'BUTTON') return;
+    const touch = e.touches[0];
+    pos3 = touch.clientX;
+    pos4 = touch.clientY;
+    document.ontouchend = closeDragElement;
+    document.ontouchmove = elementTouchDrag;
+    bringToFront(win);
+  }
+  
+  function elementTouchDrag(e) {
+    const touch = e.touches[0];
+    pos1 = pos3 - touch.clientX;
+    pos2 = pos4 - touch.clientY;
+    pos3 = touch.clientX;
+    pos4 = touch.clientY;
+    win.style.top = (win.offsetTop - pos2) + "px";
+    win.style.left = (win.offsetLeft - pos1) + "px";
+    win.style.margin = "0";
+  }
+  
+  function closeDragElement() {
+    document.onmouseup = null;
+    document.onmousemove = null;
+    document.ontouchend = null;
+    document.ontouchmove = null;
+  }
+}
 
 // Set initial theme
 setTheme('aero');
