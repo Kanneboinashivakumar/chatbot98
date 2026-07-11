@@ -15,24 +15,159 @@
     --link-purple:#800080;
     --chat-user:#0000cc;
     --chat-bot:#cc0000;
+    
+    /* Default XP values */
+    --win-bg: #ece9d8;
+    --win-border: 1px solid #0a246a;
+    --win-shadow: 2px 2px 8px rgba(0,0,0,.5);
+    --title-bg: linear-gradient(180deg,#2a6cd6 0%, #1955c0 4%, #0a3fa6 40%, #0a246a 60%, #123a8f 84%, #1650b8 100%);
+    --title-color: #fff;
+    --visualizer-color: #3ad900;
+    --taskbar-bg: linear-gradient(180deg, #245dd7 0%, #0e3eb4 10%, #1852cf 40%, #245dd7 100%);
+    --taskbar-border: #08216b;
+    --text-color: #000;
+    --body-bg: #fff;
+    --win-radius: 0px;
+    --win-backdrop: none;
+    --inner-glow: none;
+    --accent-glow: none;
   }
   *{box-sizing:border-box;}
+  
   html,body{
     height:100%;margin:0;
-    background:#5a7edc url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="4" height="4"><rect width="4" height="4" fill="%235a7edc"/><rect width="2" height="2" fill="%236b8ee6"/></svg>');
     font-family: Tahoma, Geneva, sans-serif;
     display:flex;align-items:center;justify-content:center;
     overflow:hidden;
+    position: relative;
+    width: 100%;
+    transition: background 0.5s ease;
   }
+
+  /* ---------- THEME CONFIGS ---------- */
+  body.theme-xp {
+    background:#5a7edc url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="4" height="4"><rect width="4" height="4" fill="%235a7edc"/><rect width="2" height="2" fill="%236b8ee6"/></svg>');
+    --win-bg: var(--xp-silver);
+    --win-border: 1px solid #0a246a;
+    --win-shadow: 2px 2px 8px rgba(0,0,0,.5);
+    --title-bg: linear-gradient(180deg,#2a6cd6 0%, #1955c0 4%, #0a3fa6 40%, #0a246a 60%, #123a8f 84%, #1650b8 100%);
+    --title-color: #fff;
+    --visualizer-color: #3ad900;
+    --taskbar-bg: linear-gradient(180deg, #245dd7 0%, #0e3eb4 10%, #1852cf 40%, #245dd7 100%);
+    --taskbar-border: #08216b;
+    --text-color: #000;
+    --body-bg: #fff;
+    --win-radius: 0px;
+    --win-backdrop: none;
+    --inner-glow: none;
+    --accent-glow: none;
+  }
+
+  body.theme-aero {
+    background: linear-gradient(135deg, #0e5dbf, #149acf, #36a524);
+    background-size: 400% 400%;
+    animation: aeroAurora 15s ease infinite;
+    --win-bg: rgba(255, 255, 255, 0.45);
+    --win-border: 1px solid rgba(255, 255, 255, 0.65);
+    --win-shadow: 0 8px 32px rgba(13, 98, 198, 0.3);
+    --title-bg: linear-gradient(180deg, rgba(255,255,255,0.7) 0%, rgba(210,235,255,0.55) 30%, rgba(13,98,198,0.4) 60%, rgba(17,160,207,0.3) 100%);
+    --title-color: #05264b;
+    --visualizer-color: #00d2ff;
+    --taskbar-bg: linear-gradient(180deg, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.2) 30%, rgba(0,0,0,0.3) 65%, rgba(0,0,0,0.65) 100%);
+    --taskbar-border: rgba(255,255,255,0.25);
+    --text-color: #000;
+    --body-bg: rgba(255, 255, 255, 0.85);
+    --win-radius: 8px;
+    --win-backdrop: blur(15px) saturate(120%);
+    --inner-glow: inset 1px 1px 0px rgba(255,255,255,0.8);
+    --accent-glow: 0 0 10px rgba(0, 210, 255, 0.4);
+  }
+  @keyframes aeroAurora {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  body.theme-cyber {
+    background: #080313;
+    --win-bg: rgba(12, 6, 24, 0.9);
+    --win-border: 1px solid #bf00ff;
+    --win-shadow: 0 0 18px rgba(191, 0, 255, 0.75), inset 0 0 8px rgba(191, 0, 255, 0.3);
+    --title-bg: linear-gradient(180deg, #2d013d 0%, #15001e 100%);
+    --title-color: #00ffcc;
+    --visualizer-color: #ff007f;
+    --taskbar-bg: linear-gradient(180deg, #1b002c, #0a0014);
+    --taskbar-border: #bf00ff;
+    --text-color: #00ffcc;
+    --body-bg: #120b24;
+    --win-radius: 0px;
+    --win-backdrop: none;
+    --inner-glow: none;
+    --accent-glow: 0 0 12px #bf00ff;
+  }
+  
+  /* Cyber laser grid landscape */
+  .cyber-grid {
+    display: none;
+    position: absolute;
+    inset: 0;
+    background-image: 
+      linear-gradient(rgba(191, 0, 255, 0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(191, 0, 255, 0.08) 1px, transparent 1px);
+    background-size: 50px 50px;
+    background-position: center;
+    perspective: 500px;
+    transform: rotateX(60deg) scale(2);
+    transform-origin: top center;
+    animation: gridScroll 10s linear infinite;
+    z-index: 0;
+  }
+  body.theme-cyber .cyber-grid {
+    display: block;
+  }
+  @keyframes gridScroll {
+    from { background-position: 0 0; }
+    to { background-position: 0 50px; }
+  }
+
   button{font-family:inherit;}
   :focus-visible{outline:2px solid #ffdf3c;outline-offset:1px;}
 
   /* ---------- BOOT / DIAL-UP SCREEN ---------- */
-  #boot{
-    width:100%;height:100%;background:#000;color:#c0c0c0;
-    font-family:"Courier New", monospace; font-size:14px;
-    display:flex;flex-direction:column;align-items:center;justify-content:center;
-    position:fixed;inset:0;z-index:100;
+  #boot {
+    position: fixed; inset: 0; z-index: 100;
+    background: #080a10;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    overflow: hidden;
+    transition: transform 0.8s cubic-bezier(0.85, 0, 0.15, 1), opacity 0.8s ease;
+    font-family: "Courier New", monospace; font-size: 14px;
+    color: #c0c0c0;
+  }
+  #boot.fade-out {
+    transform: translateY(-100%);
+    opacity: 0;
+    pointer-events: none;
+  }
+  .boot-glow {
+    position: absolute; width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(13, 112, 218, 0.15) 0%, rgba(20, 160, 200, 0.03) 50%, rgba(0,0,0,0) 70%);
+    z-index: 0;
+    animation: pulseGlow 8s ease infinite alternate;
+  }
+  @keyframes pulseGlow {
+    0% { transform: scale(1); opacity: 0.8; }
+    100% { transform: scale(1.2); opacity: 1; }
+  }
+  .boot-panel {
+    z-index: 1;
+    background: rgba(18, 22, 34, 0.72);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 30px;
+    display: flex; flex-direction: column; align-items: center;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1);
+    width: 580px; max-width: 92vw;
   }
   #boot pre{color:#00ff66;margin:0 0 18px 0;font-size:12px;line-height:1.3;text-align:center;}
   #bootlines{width:520px;max-width:90vw;}
@@ -42,24 +177,83 @@
   #dialbar{width:520px;max-width:90vw;height:18px;border:1px solid #444;margin-top:14px;position:relative;background:#111;}
   #dialbar-fill{height:100%;width:0%;background:repeating-linear-gradient(45deg,#00aaff,#00aaff 8px,#0077cc 8px,#0077cc 16px);transition:width .25s linear;}
   #dialpct{margin-top:6px;font-size:12px;}
+  
+  /* Spinning CD disc Y2K element */
+  .spinning-cd {
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #333 10%, #777 15%, #aaa 25%, #fff 40%, #777 55%, #111 70%);
+    position: relative;
+    animation: spin 3s linear infinite;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.4), inset 0 0 10px rgba(255,255,255,0.3);
+    margin-bottom: 20px;
+  }
+  .cd-inner {
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    background: #080a10;
+    border: 3px solid #666;
+    position: absolute;
+    inset: 0; margin: auto;
+  }
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  .boot-theme-select {
+    margin-top: 18px;
+    width: 100%;
+    border-top: 1px dashed rgba(255,255,255,0.15);
+    padding-top: 14px;
+    text-align: center;
+  }
+  .theme-select-btn {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 4px;
+    color: #ccc;
+    font-family: inherit;
+    font-size: 11px;
+    padding: 4px 12px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.2s;
+  }
+  .theme-select-btn.active {
+    background: #0088ff;
+    border-color: #00aaff;
+    color: #fff;
+    box-shadow: 0 0 8px rgba(0, 136, 255, 0.5);
+  }
+  .theme-select-btn:hover {
+    background: rgba(255,255,255,0.12);
+  }
+
   #enterbtn{
-    margin-top:22px;background:var(--xp-silver);border:2px outset #fff;
+    margin-top:22px;background:#ece9d8;border:2px outset #fff;
     padding:6px 22px;font-weight:bold;cursor:pointer;font-size:13px;display:none;
+    color: #000;
   }
   #enterbtn:active{border-style:inset;}
 
   /* ---------- WINDOW CHROME (shared) ---------- */
   .win{
-    background:var(--xp-silver);
-    border:1px solid #0a246a;
-    box-shadow:2px 2px 8px rgba(0,0,0,.5);
+    background:var(--win-bg);
+    border:var(--win-border);
+    box-shadow:var(--win-shadow);
     display:flex;flex-direction:column;
+    backdrop-filter: var(--win-backdrop);
+    border-radius: var(--win-radius);
+    box-shadow: var(--win-shadow), var(--inner-glow);
+    z-index: 10;
   }
   .titlebar{
-    background:linear-gradient(180deg,#2a6cd6 0%, #1955c0 4%, #0a3fa6 40%, #0a246a 60%, #123a8f 84%, #1650b8 100%);
-    color:#fff;font-weight:bold;font-size:13px;
+    background:var(--title-bg);
+    color:var(--title-color);
+    font-weight:bold;font-size:13px;
     padding:3px 4px 4px 6px;display:flex;align-items:center;gap:6px;
-    border-bottom:1px solid #04123a;
+    border-bottom:1px solid rgba(0, 0, 0, 0.15);
   }
   .titlebar .icon{width:14px;height:14px;background:var(--xp-green);border-radius:50%;border:1px solid #1a5c00;flex:none;}
   .titlebar .ttl{flex:1;text-shadow:1px 1px 1px rgba(0,0,0,.4);letter-spacing:.2px;}
@@ -69,44 +263,101 @@
     background:linear-gradient(180deg,#f4f4f4,#c9c9c9);
     border:1px solid #7d8fa8;border-radius:2px;font-size:10px;color:#111;
     display:flex;align-items:center;justify-content:center;line-height:0;
+    cursor: pointer;
   }
   .menubar{
     background:var(--xp-silver);border-bottom:1px solid #b8b3a0;
     font-size:12px;padding:2px 6px;display:flex;gap:14px;color:#222;
   }
-  .menubar span:hover{background:var(--xp-lightblue);}
+  body.theme-aero .menubar {
+    background: rgba(255,255,255,0.4);
+    border-color: rgba(255,255,255,0.25);
+  }
+  body.theme-cyber .menubar {
+    background: #15092a;
+    border-color: #bf00ff;
+    color: #00ffcc;
+  }
+  .menubar span:hover{background:var(--xp-lightblue); cursor: pointer;}
 
   /* ---------- BUDDY LIST ---------- */
-  #buddylist{width:230px;height:430px;position:fixed;inset:0;margin:auto;z-index:20;display:none;}
+  #buddylist{width:230px;height:430px;position:fixed;left:50px;top:50px;display:none;}
   #buddylist.show{display:flex;}
-  .bl-body{flex:1;overflow-y:auto;background:#fff;}
+  .bl-body{flex:1;overflow-y:auto;background:var(--body-bg); color: var(--text-color);}
   .bl-header{
     background:linear-gradient(180deg,#fffbe0,#fff2b0);
     border-bottom:1px solid #d8c96a;font-size:11px;color:#5a4a00;
     padding:4px 8px;font-weight:bold;
   }
+  body.theme-aero .bl-header {
+    background: linear-gradient(180deg, rgba(255,255,255,0.5), rgba(200,230,255,0.3));
+    color: #0c335c;
+    border-bottom-color: rgba(255,255,255,0.3);
+  }
+  body.theme-cyber .bl-header {
+    background: #250b4a;
+    color: #ff00ff;
+    border-bottom-color: #bf00ff;
+  }
   .bl-group{
     background:var(--xp-lightblue);font-size:11px;font-weight:bold;color:#0a246a;
     padding:3px 6px;display:flex;align-items:center;gap:4px;border-bottom:1px solid #8fb3e0;
+  }
+  body.theme-aero .bl-group {
+    background: rgba(13,98,198,0.25);
+    color: #05264b;
+    border-bottom-color: rgba(255,255,255,0.2);
+  }
+  body.theme-cyber .bl-group {
+    background: #1c003d;
+    color: #00ffcc;
+    border-bottom-color: #bf00ff;
   }
   .bl-buddy{
     display:flex;align-items:center;gap:6px;padding:6px 10px;font-size:12.5px;
     cursor:pointer;border-bottom:1px solid #f0f0f0;
   }
+  body.theme-cyber .bl-buddy {
+    border-bottom-color: rgba(191,0,255,0.15);
+  }
   .bl-buddy:hover{background:#e6f0ff;}
+  body.theme-aero .bl-buddy:hover { background: rgba(255,255,255,0.3); }
+  body.theme-cyber .bl-buddy:hover { background: rgba(191,0,255,0.1); }
+  
   .dot{width:9px;height:9px;border-radius:50%;flex:none;}
   .dot.online{background:var(--xp-green);box-shadow:0 0 3px var(--xp-green);}
   .dot.away{background:var(--xp-away);box-shadow:0 0 3px var(--xp-away);}
   .dot.offline-dot{background:#888;box-shadow:none;}
   .bl-name{color:var(--link-purple);text-decoration:underline;font-weight:bold;}
+  body.theme-cyber .bl-name { color: #ff00ff; }
   .bl-status{color:#666;font-size:10.5px;margin-left:16px;display:block;}
+  body.theme-cyber .bl-status { color: #888; }
   .bl-footer{
     font-size:10px;color:#333;background:var(--xp-silver);border-top:1px solid #b8b3a0;
     padding:4px 8px;display:flex;justify-content:space-between;
   }
+  body.theme-aero .bl-footer {
+    background: rgba(255,255,255,0.3);
+    border-top-color: rgba(255,255,255,0.2);
+    color: #333;
+  }
+  body.theme-cyber .bl-footer {
+    background: #15092a;
+    border-top-color: #bf00ff;
+    color: #888;
+  }
   .nowplaying{
     font-size:10px;color:#0000cc;background:#fffdf0;border-top:1px solid #d8c96a;
-    padding:3px 8px;display:flex;justify-content:space-between;align-items:center;
+  }
+  body.theme-aero .nowplaying {
+    background: rgba(255,255,255,0.45);
+    border-top-color: rgba(255,255,255,0.3);
+    color: #0c335c;
+  }
+  body.theme-cyber .nowplaying {
+    background: #0f0522;
+    border-top-color: #bf00ff;
+    color: #00ffcc;
   }
   .nowplaying .note{animation:blink 1s steps(1) infinite;}
   @keyframes blink{50%{opacity:.25;}}
@@ -114,29 +365,48 @@
   @media (prefers-reduced-motion: reduce){ .nowplaying .note{animation:none;} }
 
   /* ---------- CHAT WINDOW ---------- */
-  #chatwin{width:430px;height:480px;position:fixed;right:26px;bottom:26px;z-index:30;display:none;flex-direction:column;}
+  #chatwin{width:430px;height:480px;position:fixed;right:80px;bottom:80px;display:none;flex-direction:column;}
   #chatwin.show{display:flex;}
   .chat-toolbar{
     display:flex;gap:6px;padding:4px 6px;background:var(--xp-silver);
     border-bottom:1px solid #b8b3a0;
+  }
+  body.theme-aero .chat-toolbar {
+    background: rgba(255,255,255,0.3);
+    border-bottom-color: rgba(255,255,255,0.25);
+  }
+  body.theme-cyber .chat-toolbar {
+    background: #15092a;
+    border-bottom-color: #bf00ff;
   }
   .chat-toolbar button{
     background:linear-gradient(180deg,#fdfdfd,#dcdcdc);border:1px solid #8a8a8a;
     border-radius:2px;font-size:11px;padding:2px 7px;cursor:pointer;
   }
   #chatlog{
-    flex:1;background:#fff;overflow-y:auto;padding:8px 10px;
+    flex:1;background:var(--body-bg);overflow-y:auto;padding:8px 10px;
     font-family:"Times New Roman", serif;font-size:14px;line-height:1.5;
+    color: var(--text-color);
   }
   .msg{margin-bottom:6px;}
   .who{font-weight:bold;}
   .who.user{color:var(--chat-user);}
+  body.theme-cyber .who.user { color: #00ffcc; }
   .who.bot{color:var(--chat-bot);}
+  body.theme-cyber .who.bot { color: #ff00ff; }
   .ts{color:#888;font-size:11px;font-family:Tahoma,sans-serif;margin-left:4px;}
   .typing{color:#888;font-size:12px;font-style:italic;font-family:Tahoma,sans-serif;padding:2px 10px;}
   .chat-inputbar{
     border-top:2px solid #b8b3a0;background:var(--xp-silver);
     padding:6px;display:flex;flex-direction:column;gap:6px;
+  }
+  body.theme-aero .chat-inputbar {
+    background: rgba(255,255,255,0.3);
+    border-top-color: rgba(255,255,255,0.25);
+  }
+  body.theme-cyber .chat-inputbar {
+    background: #15092a;
+    border-top-color: #bf00ff;
   }
   .fmtrow{display:flex;gap:4px;}
   .fmtrow button{
@@ -149,41 +419,190 @@
     font-size:14px;padding:4px;resize:none;
   }
   #sendBtn{
-    background:var(--xp-silver);border:2px outset #fff;padding:0 16px;font-weight:bold;
+    background:#ece9d8;border:2px outset #fff;padding:0 16px;font-weight:bold;
     font-size:12px;cursor:pointer;
+    color: #000;
   }
   #sendBtn:active{border-style:inset;}
   .chat-status{font-size:10px;color:#444;padding:2px 8px;background:var(--xp-silver);
     border-top:1px solid #d8d5c8;display:flex;justify-content:space-between;}
+  body.theme-aero .chat-status {
+    background: rgba(255,255,255,0.25);
+    border-top-color: rgba(255,255,255,0.2);
+    color: #333;
+  }
+  body.theme-cyber .chat-status {
+    background: #0f0522;
+    border-top-color: #bf00ff;
+    color: #888;
+  }
 
   ::-webkit-scrollbar{width:16px;}
   ::-webkit-scrollbar-track{background:#d8d5c8;}
   ::-webkit-scrollbar-thumb{background:linear-gradient(180deg,#f4f4f4,#c0c0c0);border:1px solid #8a8a8a;}
 
+  /* ---------- DESKTOP TASKBAR ---------- */
+  #taskbar {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    height: 40px;
+    background: var(--taskbar-bg);
+    border-top: 1px solid var(--taskbar-border);
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    z-index: 90;
+    font-size: 12px;
+  }
+  body.theme-aero #taskbar {
+    backdrop-filter: blur(12px);
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+  }
+  #startOrb {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    user-select: none;
+    height: 100%;
+    padding: 0 12px;
+  }
+  body.theme-xp #startOrb {
+    background: linear-gradient(180deg, #388a38 0%, #215921 100%);
+    border: 1px solid #1c3e1c;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    color: #fff;
+    font-weight: bold;
+    font-style: italic;
+    font-size: 14px;
+    text-shadow: 1px 1px 1px #000;
+  }
+  body.theme-xp #startOrb:hover {
+    background: linear-gradient(180deg, #4fa84f 0%, #2f7a2f 100%);
+  }
+  body.theme-aero #startOrb {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, rgba(255,255,255,0.6) 0%, rgba(13,98,198,0.7) 40%, rgba(5,40,90,0.9) 100%);
+    box-shadow: 0 2px 8px rgba(0,100,255,0.4), inset 0 0 5px rgba(255,255,255,0.6);
+    border: 1px solid rgba(255,255,255,0.4);
+    padding: 0;
+    justify-content: center;
+    transform: scale(0.95);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  body.theme-aero #startOrb:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 12px rgba(0,210,255,0.7), inset 0 0 8px rgba(255,255,255,0.8);
+  }
+  body.theme-cyber #startOrb {
+    border: 1px solid #00ffcc;
+    color: #00ffcc;
+    font-weight: bold;
+    font-family: monospace;
+    text-transform: uppercase;
+    box-shadow: 0 0 8px rgba(0, 255, 204, 0.4);
+    padding: 2px 10px;
+    height: 28px;
+    border-radius: 3px;
+  }
+  body.theme-cyber #startOrb:hover {
+    background: rgba(0, 255, 204, 0.15);
+    box-shadow: 0 0 12px #00ffcc;
+  }
+  #taskbar-tasks {
+    flex: 1;
+    display: flex;
+    gap: 6px;
+    margin-left: 12px;
+    height: 100%;
+    align-items: center;
+  }
+  .task-btn {
+    height: 28px;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 3px;
+    padding: 0 10px;
+    display: flex;
+    align-items: center;
+    color: #fff;
+    cursor: pointer;
+    max-width: 160px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    transition: background 0.2s;
+  }
+  .task-btn.active {
+    background: rgba(255,255,255,0.3);
+    border-color: rgba(255,255,255,0.45);
+    font-weight: bold;
+  }
+  .task-btn:hover {
+    background: rgba(255,255,255,0.25);
+  }
+  #systray {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #fff;
+    padding: 0 8px;
+  }
+  body.theme-xp #systray {
+    background: #0f80ff;
+    border-left: 1px solid #005ce6;
+    height: 100%;
+  }
+  #systray-time {
+    font-weight: bold;
+  }
+
   @media (max-width:560px){
-    #buddylist{width:92vw;height:60vh;}
-    #chatwin{width:94vw;height:66vh;right:3vw;bottom:3vw;}
+    #buddylist{width:92vw;height:60vh;left:4vw;top:4vw;}
+    #chatwin{width:94vw;height:66vh;right:3vw;bottom:48px;}
   }
   @media (prefers-reduced-motion: reduce){
     .bootline, #dialbar-fill{transition:none;}
   }
 </style>
 </head>
-<body>
+<body class="theme-aero">
+
+<!-- Cyber laser grid background -->
+<div class="cyber-grid"></div>
 
 <!-- ================= BOOT SCREEN ================= -->
 <div id="boot">
-  <pre id="asciiTitle"> ___    _   __  __                                   
+  <div class="boot-glow"></div>
+  <div class="boot-panel">
+    <div class="spinning-cd">
+      <div class="cd-inner"></div>
+    </div>
+    <pre id="asciiTitle"> ___    _   __  __                                   
 |   |  |_| |  \/  | ___  ___ ___  ___ _ __  __ _  ___ _ __
 | | | | | | |\/| |/ _ \/ __/ __|/ _ \ '_ \/ _` |/ _ \ '__|
 | |_| | | | |  | |  __/\__ \__ \  __/ | | (_| |  __/ |
 |___/ |_|_|_|  |_|\___||___/___/\___|_| |_\__, |\___|_|
                                             __/ |
                                            |___/  2006 EDITION</pre>
-  <div id="bootlines"></div>
-  <div id="dialbar"><div id="dialbar-fill"></div></div>
-  <div id="dialpct">Dialing... 0%</div>
-  <button id="enterbtn">Sign On &raquo;</button>
+    <div id="bootlines"></div>
+    <div id="dialbar"><div id="dialbar-fill"></div></div>
+    <div id="dialpct">Dialing... 0%</div>
+    
+    <div class="boot-theme-select">
+      <div style="font-size: 10px; letter-spacing: 1px; color: #888; margin-bottom: 6px;">SELECT DESKTOP SKIN</div>
+      <div style="display: flex; gap: 8px; justify-content: center;">
+        <button onclick="setTheme('xp')" id="btn-theme-xp" class="theme-select-btn">Windows XP</button>
+        <button onclick="setTheme('aero')" id="btn-theme-aero" class="theme-select-btn active">Frutiger Aero</button>
+        <button onclick="setTheme('cyber')" id="btn-theme-cyber" class="theme-select-btn">Cyber Y2K</button>
+      </div>
+    </div>
+    
+    <button id="enterbtn">Sign On &raquo;</button>
+  </div>
 </div>
 
 <!-- ================= BUDDY LIST ================= -->
@@ -191,7 +610,7 @@
   <div class="titlebar">
     <div class="icon"></div>
     <div class="ttl">jordan_2k6 &mdash; AI Messenger</div>
-    <div class="winbtns"><span>_</span><span>&#9633;</span><span>&times;</span></div>
+    <div class="winbtns"><span onclick="toggleWindow('buddylist')">_</span><span>&#9633;</span><span onclick="toggleWindow('buddylist')">&times;</span></div>
   </div>
   <div class="menubar"><span>File</span><span>Edit</span><span>People</span><span>Actions</span><span>Help</span></div>
   <div class="bl-header">jordan_2k6 <span style="font-weight:normal;">(Available)</span></div>
@@ -217,9 +636,20 @@
     <span id="visitCounter">Visitors: 000001</span>
     <span>Last modified 03/14/2006</span>
   </div>
-  <div class="nowplaying">
-    <span><span class="note">&#9834;</span> Now Playing: ai_messenger_theme.mid</span>
-    <a id="musicToggle">[turn off music]</a>
+  <div style="background:rgba(255,255,255,0.15); padding:4px 8px; font-size:10px; display:flex; justify-content:space-between; align-items:center; border-top:1px solid rgba(0,0,0,0.1); border-bottom:1px solid rgba(0,0,0,0.1); color:inherit;">
+    <span>Desktop Skin:</span>
+    <div style="display:flex; gap:4px; font-weight:bold;">
+      <a onclick="setTheme('xp')" style="text-decoration:underline; cursor:pointer;">XP</a> | 
+      <a onclick="setTheme('aero')" style="text-decoration:underline; cursor:pointer;">Aero</a> | 
+      <a onclick="setTheme('cyber')" style="text-decoration:underline; cursor:pointer;">Cyber</a>
+    </div>
+  </div>
+  <div class="nowplaying" style="display:flex; flex-direction:column; gap:4px; padding:6px 8px;">
+    <div style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+      <span><span class="note">&#9834;</span> Now Playing: ai_messenger_theme.mid</span>
+      <a id="musicToggle" style="cursor:pointer; text-decoration:underline;">[turn off music]</a>
+    </div>
+    <canvas id="visualizer" width="210" height="18" style="background:#000; border:1px solid rgba(255,255,255,0.25); width:100%; height:18px;"></canvas>
   </div>
 </div>
 
@@ -228,7 +658,7 @@
   <div class="titlebar">
     <div class="icon"></div>
     <div class="ttl">IM with ChatBot98</div>
-    <div class="winbtns"><span>_</span><span>&#9633;</span><span id="closeChat">&times;</span></div>
+    <div class="winbtns"><span onclick="toggleWindow('chatwin')">_</span><span>&#9633;</span><span id="closeChat">&times;</span></div>
   </div>
   <div class="menubar"><span>File</span><span>Edit</span><span>Insert</span><span>People</span></div>
   <div class="chat-toolbar">
@@ -253,6 +683,29 @@
   <div class="chat-status">
     <span>Direct Connection</span>
     <span id="pingStat">Idle</span>
+  </div>
+</div>
+
+<!-- ================= DESKTOP TASKBAR ================= -->
+<div id="taskbar">
+  <div id="startOrb">
+    <span class="start-logo"></span>
+    <span class="start-text">start</span>
+  </div>
+  <div id="taskbar-tasks">
+    <div class="task-btn active" id="task-buddylist" onclick="toggleWindow('buddylist')">
+      <span class="task-icon"></span>
+      <span class="task-title">ChatBot98 &mdash; Buddy List</span>
+    </div>
+    <div class="task-btn" id="task-chatwin" style="display:none;" onclick="toggleWindow('chatwin')">
+      <span class="task-icon chat"></span>
+      <span class="task-title">IM with ChatBot98</span>
+    </div>
+  </div>
+  <div id="systray">
+    <span class="systray-icon" title="Connected via 33.6kbps Modem">🔌</span>
+    <span class="systray-icon" title="Volume">🔊</span>
+    <span id="systray-time">12:00 PM</span>
   </div>
 </div>
 
@@ -298,13 +751,29 @@ const dialInterval = setInterval(()=>{
 }, 220);
 
 enterBtn.addEventListener('click', ()=>{
-  document.getElementById('boot').style.display = 'none';
+  // Add CSS fade-out class to boot screen for smooth transition
+  const bootEl = document.getElementById('boot');
+  bootEl.classList.add('fade-out');
+  setTimeout(() => {
+    bootEl.style.display = 'none';
+  }, 800);
+  
+  document.getElementById('buddylist').style.display = 'flex';
   document.getElementById('buddylist').classList.add('show');
+  
+  // Create and unlock AudioContext synchronously
+  actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+  unlockAudioContext(actx);
+  
+  // Initialize audio graph and visualizer analyser
+  if (!masterGain) initAudioGraph();
+  
   startTheme();
-  // Initialize and play sign-on sound
   playSignOnSound();
-  // Start the idle detection timer
   resetIdleTimer();
+  
+  // Start canvas visualizer loop
+  drawVisualizer();
 });
 
 // ---------------- SYNTHESIZED "MIDI" BACKGROUND THEME ----------------
@@ -326,16 +795,25 @@ const bass = [130.81, 130.81, 174.61, 174.61, 196.00, 196.00, 174.61, 130.81]; /
 
 let delayNode, feedbackGain, masterGain;
 
+let analyser;
 function initAudioGraph(){
   masterGain = actx.createGain();
   masterGain.gain.value = 0.06;
+  
+  // Set up visualizer analyser node
+  analyser = actx.createAnalyser();
+  analyser.fftSize = 64; // 32 frequency bins
+  masterGain.connect(analyser);
+  
   delayNode = actx.createDelay();
   delayNode.delayTime.value = 0.22;
   feedbackGain = actx.createGain();
   feedbackGain.gain.value = 0.18; // gentle echo, not a wall of reverb
+  
   delayNode.connect(feedbackGain);
   feedbackGain.connect(delayNode);
   masterGain.connect(delayNode);
+  
   delayNode.connect(actx.destination);
   masterGain.connect(actx.destination);
 }
@@ -375,13 +853,11 @@ function playHat(time){
 function startTheme(){
   if(!musicOn) return;
   try{
-    actx = actx || new (window.AudioContext || window.webkitAudioContext)();
-    if(!masterGain) initAudioGraph();
     if(actx.state === 'suspended') actx.resume();
     const stepTime = 0.185; // ~130bpm eighth notes
     themeTimer = setInterval(()=>{
       if(!musicOn) return;
-      const now = actx.currentTime;
+      const now = actx.currentTime + 0.05; // 50ms look-ahead buffer for mobile/scheduling safety!
       const step = stepCount % melody.length;
       playTone(melody[step], now, stepTime * 0.9, 'square', 0.05);
       if(step % 2 === 0) playTone(bass[(step/2)|0], now, stepTime * 1.8, 'triangle', 0.06);
@@ -464,14 +940,34 @@ document.getElementById('musicToggle').addEventListener('click', (e)=>{
 const buddylist = document.getElementById('buddylist');
 const chatwin = document.getElementById('chatwin');
 document.getElementById('openChat').addEventListener('click', ()=>{
+  const chatwin = document.getElementById('chatwin');
+  chatwin.style.display = 'flex';
   chatwin.classList.add('show');
+  chatwin.classList.remove('minimized');
+  bringToFront(chatwin);
+  
+  // Show active task button in taskbar
+  const taskChat = document.getElementById('task-chatwin');
+  if (taskChat) {
+    taskChat.style.display = 'flex';
+    taskChat.classList.add('active');
+  }
+  
   if(chatlog.children.length===0){
     pushMsg('bot', "heyyy! its ur AI buddy from the future lol. ask me anything (yes this really works, its a real AI)");
   }
   resetIdleTimer();
 });
-document.getElementById('closeChat').addEventListener('click', ()=>{
+document.getElementById('closeChat').addEventListener('click', (e)=>{
+  e.stopPropagation();
+  const chatwin = document.getElementById('chatwin');
+  chatwin.style.display = 'none';
   chatwin.classList.remove('show');
+  const taskChat = document.getElementById('task-chatwin');
+  if (taskChat) {
+    taskChat.style.display = 'none';
+    taskChat.classList.remove('active');
+  }
 });
 
 // ---------------- VISITOR COUNTER (Y2K hit-counter style) ----------------
@@ -636,6 +1132,163 @@ function goAway() {
 
 // Hook user input to reset idle timer
 msgInput.addEventListener('input', resetIdleTimer);
+
+// ---------------- PREMIUM DESKTOP UTILITIES ----------------
+let bubbleInterval = null;
+
+function unlockAudioContext(context) {
+  if (context.state === 'suspended') {
+    context.resume();
+  }
+  const buffer = context.createBuffer(1, 1, 22050);
+  const source = context.createBufferSource();
+  source.buffer = buffer;
+  source.connect(context.destination);
+  source.start(0);
+}
+
+function updateClock() {
+  const el = document.getElementById('systray-time');
+  if (el) {
+    const now = new Date();
+    el.textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  }
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+let currentTheme = 'aero';
+function setTheme(name) {
+  document.body.className = '';
+  document.body.classList.add('theme-' + name);
+  currentTheme = name;
+  
+  ['xp', 'aero', 'cyber'].forEach(t => {
+    const btn = document.getElementById('btn-theme-' + t);
+    if (btn) {
+      if (t === name) btn.classList.add('active');
+      else btn.classList.remove('active');
+    }
+  });
+  
+  createAeroBubbles();
+}
+
+function createAeroBubbles() {
+  clearInterval(bubbleInterval);
+  const existing = document.getElementById('aero-bubbles');
+  if (existing) existing.remove();
+  
+  if (document.body.classList.contains('theme-aero')) {
+    const container = document.createElement('div');
+    container.id = 'aero-bubbles';
+    container.style.position = 'fixed';
+    container.style.inset = '0';
+    container.style.pointerEvents = 'none';
+    container.style.zIndex = '1';
+    container.style.overflow = 'hidden';
+    document.body.appendChild(container);
+    
+    bubbleInterval = setInterval(() => {
+      if (!document.body.classList.contains('theme-aero')) {
+        clearInterval(bubbleInterval);
+        container.remove();
+        return;
+      }
+      const bubble = document.createElement('div');
+      bubble.style.width = (Math.random() * 25 + 8) + 'px';
+      bubble.style.height = bubble.style.width;
+      bubble.style.background = 'radial-gradient(circle at 30% 30%, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0.1) 40%, rgba(0,180,255,0.2) 70%, rgba(255,255,255,0) 100%)';
+      bubble.style.border = '1px solid rgba(255,255,255,0.55)';
+      bubble.style.borderRadius = '50%';
+      bubble.style.position = 'absolute';
+      bubble.style.bottom = '-40px';
+      bubble.style.left = Math.random() * 100 + 'vw';
+      bubble.style.opacity = Math.random() * 0.5 + 0.2;
+      bubble.style.boxShadow = 'inset -2px -2px 5px rgba(0,0,0,0.05), 0 4px 10px rgba(0,100,255,0.1)';
+      
+      const duration = Math.random() * 8 + 6;
+      bubble.style.transition = `transform ${duration}s linear, opacity ${duration}s ease-in-out`;
+      container.appendChild(bubble);
+      
+      setTimeout(() => {
+        bubble.style.transform = `translateY(-110vh) translateX(${(Math.random() * 100 - 50)}px)`;
+        bubble.style.opacity = '0';
+      }, 50);
+      
+      setTimeout(() => {
+        bubble.remove();
+      }, duration * 1000 + 100);
+    }, 800);
+  }
+}
+
+function drawVisualizer() {
+  requestAnimationFrame(drawVisualizer);
+  const canvas = document.getElementById('visualizer');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const width = canvas.width;
+  const height = canvas.height;
+  
+  ctx.fillStyle = '#000';
+  ctx.fillRect(0, 0, width, height);
+  
+  if (!analyser || !musicOn) {
+    ctx.strokeStyle = currentTheme === 'cyber' ? '#ff007f' : (currentTheme === 'aero' ? '#00d2ff' : '#3ad900');
+    ctx.beginPath();
+    ctx.moveTo(0, height / 2);
+    ctx.lineTo(width, height / 2);
+    ctx.stroke();
+    return;
+  }
+  
+  const bufferLength = analyser.frequencyBinCount;
+  const dataArray = new Uint8Array(bufferLength);
+  analyser.getByteFrequencyData(dataArray);
+  
+  const barWidth = (width / bufferLength) * 1.4;
+  let barHeight;
+  let x = 0;
+  
+  for (let i = 0; i < bufferLength; i++) {
+    barHeight = dataArray[i];
+    const activeColor = currentTheme === 'cyber' ? '#ff007f' : (currentTheme === 'aero' ? '#00d2ff' : '#3ad900');
+    ctx.fillStyle = activeColor;
+    const drawHeight = (barHeight / 255) * height * 0.85 + 2;
+    ctx.fillRect(x, height - drawHeight, barWidth - 2, drawHeight);
+    x += barWidth;
+  }
+}
+
+function toggleWindow(id) {
+  const win = document.getElementById(id);
+  const taskBtn = document.getElementById('task-' + id);
+  if (win.style.display === 'none' || win.classList.contains('minimized') || !win.classList.contains('show')) {
+    win.style.display = 'flex';
+    win.classList.add('show');
+    win.classList.remove('minimized');
+    if (taskBtn) taskBtn.classList.add('active');
+    bringToFront(win);
+  } else {
+    win.style.display = 'none';
+    win.classList.remove('show');
+    win.classList.add('minimized');
+    if (taskBtn) taskBtn.classList.remove('active');
+  }
+}
+
+let maxZ = 30;
+function bringToFront(win) {
+  maxZ++;
+  win.style.zIndex = maxZ;
+}
+
+document.getElementById('buddylist').addEventListener('mousedown', () => bringToFront(document.getElementById('buddylist')));
+document.getElementById('chatwin').addEventListener('mousedown', () => bringToFront(document.getElementById('chatwin')));
+
+// Set initial theme
+setTheme('aero');
 </script>
 </body>
 </html>
