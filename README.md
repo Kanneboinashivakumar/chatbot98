@@ -1,6 +1,9 @@
 # 🤖 ChatBot98: AI Messenger 2006
 
-[![ChatBot98 Interface](./videoframe_20769.png)](https://chatbot98-a8il.vercel.app)
+<p align="center">
+  <img src="./assets/images/live_screenshot_boot.png" width="48%" alt="Dial-up Boot Screen" />
+  <img src="./assets/images/live_screenshot_workspace.png" width="48%" alt="Desktop Workspace" />
+</p>
 
 *   **Live Demo URL**: [chatbot98-a8il.vercel.app](https://chatbot98-a8il.vercel.app)
 *   **Video Demo**: [Watch presentation video](./chatbot89.mp4)
