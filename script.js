@@ -1224,5 +1224,101 @@ function updatePortalIcons(theme) {
   }
 }
 
+// Y2K Sparkle Cursor Trail
+const cursorCanvas = document.getElementById('cursor-canvas');
+let cursorCtx = null;
+const sparkles = [];
+
+if (cursorCanvas && !window.matchMedia('(pointer: coarse)').matches) {
+  cursorCtx = cursorCanvas.getContext('2d');
+  
+  function resizeCursorCanvas() {
+    cursorCanvas.width = window.innerWidth;
+    cursorCanvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resizeCursorCanvas);
+  resizeCursorCanvas();
+
+  window.addEventListener('mousemove', (e) => {
+    let colors = ['#ffffff'];
+    if (currentTheme === 'xp') {
+      colors = ['#ffd700', '#fff8dc', '#ffffff'];
+    } else if (currentTheme === 'aero') {
+      colors = ['#00e5ff', '#80deea', '#ffffff'];
+    } else if (currentTheme === 'cyber') {
+      colors = ['#00ff66', '#3ad900', '#b2ffb2'];
+    }
+    const color = colors[Math.floor(Math.random() * colors.length)];
+    
+    for (let i = 0; i < 2; i++) {
+      sparkles.push({
+        x: e.clientX,
+        y: e.clientY,
+        vx: (Math.random() - 0.5) * 1.5,
+        vy: (Math.random() - 0.5) * 1.5 - 0.3,
+        size: Math.random() * 6 + 4,
+        maxLife: 600,
+        life: 600,
+        color: color
+      });
+    }
+  });
+
+  function draw4PointStar(ctx, cx, cy, outerRadius, innerRadius, color, alpha) {
+    ctx.save();
+    ctx.globalAlpha = alpha;
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    let rot = Math.PI / 2 * 3;
+    let x = cx;
+    let y = cy;
+    let step = Math.PI / 4;
+    ctx.moveTo(cx, cy - outerRadius);
+    for (let i = 0; i < 4; i++) {
+      x = cx + Math.cos(rot) * outerRadius;
+      y = cy + Math.sin(rot) * outerRadius;
+      ctx.lineTo(x, y);
+      rot += step;
+      x = cx + Math.cos(rot) * innerRadius;
+      y = cy + Math.sin(rot) * innerRadius;
+      ctx.lineTo(x, y);
+      rot += step;
+    }
+    ctx.lineTo(cx, cy - outerRadius);
+    ctx.closePath();
+    ctx.fill();
+    ctx.restore();
+  }
+
+  let lastTime = performance.now();
+  function animateCursorTrail(time) {
+    const delta = time - lastTime;
+    lastTime = time;
+
+    cursorCtx.clearRect(0, 0, cursorCanvas.width, cursorCanvas.height);
+
+    for (let i = sparkles.length - 1; i >= 0; i--) {
+      const s = sparkles[i];
+      s.x += s.vx;
+      s.y += s.vy;
+      s.life -= delta;
+      
+      if (s.life <= 0) {
+        sparkles.splice(i, 1);
+        continue;
+      }
+
+      const alpha = Math.max(0, s.life / s.maxLife);
+      const outerRad = s.size * (s.life / s.maxLife);
+      const innerRad = outerRad / 3.5;
+      
+      draw4PointStar(cursorCtx, s.x, s.y, outerRad, innerRad, s.color, alpha);
+    }
+
+    requestAnimationFrame(animateCursorTrail);
+  }
+  requestAnimationFrame(animateCursorTrail);
+}
+
 // Set initial theme
 setTheme('aero');
