@@ -598,7 +598,7 @@ function drawVisualizerCanvas(canvas) {
   ctx.fillRect(0, 0, width, height);
   
   if (!analyser || !musicOn) {
-    ctx.strokeStyle = currentTheme === 'cyber' ? '#ff007f' : (currentTheme === 'aero' ? '#00d2ff' : '#3ad900');
+    ctx.strokeStyle = currentTheme === 'cyber' ? '#00ff66' : (currentTheme === 'aero' ? '#00d2ff' : '#3ad900');
     ctx.lineWidth = 1.5;
     ctx.beginPath();
     ctx.moveTo(0, height / 2);
@@ -617,7 +617,7 @@ function drawVisualizerCanvas(canvas) {
   
   for (let i = 0; i < bufferLength; i++) {
     barHeight = dataArray[i];
-    const activeColor = currentTheme === 'cyber' ? '#ff007f' : (currentTheme === 'aero' ? '#00d2ff' : '#3ad900');
+    const activeColor = currentTheme === 'cyber' ? '#00ff66' : (currentTheme === 'aero' ? '#00d2ff' : '#3ad900');
     ctx.fillStyle = activeColor;
     const drawHeight = (barHeight / 255) * height * 0.85 + 2;
     ctx.fillRect(x, height - drawHeight, barWidth - 1, drawHeight);
@@ -819,16 +819,17 @@ function initStarryBg() {
     container.appendChild(star);
   }
   
-  // Floating space emojis
-  const emojis = ['🪐', '🛸', '☄️', '🌍', '🌟', '🚀', '👾'];
-  for (let e = 0; e < 10; e++) {
+  // Floating space emojis - smaller size (24-32px) and increased count (18)
+  const emojis = ['🪐', '🛸', '☄️', '🌍', '🌟', '🚀', '👾', '📡', '☄️', '🛸'];
+  for (let e = 0; e < 18; e++) {
     const obj = document.createElement('div');
     obj.className = 'floating-object';
+    obj.style.fontSize = (Math.random() * 8 + 24) + 'px';
     obj.textContent = emojis[e % emojis.length];
     obj.style.left = Math.random() * 90 + 'vw';
     obj.style.top = Math.random() * 90 + 'vh';
     obj.style.animationDelay = (Math.random() * -12) + 's';
-    const dur = Math.random() * 10 + 15;
+    const dur = Math.random() * 12 + 16;
     obj.style.animationDuration = dur + 's';
     container.appendChild(obj);
   }
@@ -1057,7 +1058,7 @@ function initCyberCanvas() {
     cyberCtx.fillText("YOU HAVE BEEN HACKED! /L3-g97", 30, cyberCanvas.height - 35);
     
     // Draw oscillating vector wireframe lines (from bottom to top)
-    cyberCtx.strokeStyle = 'rgba(191, 0, 255, 0.35)';
+    cyberCtx.strokeStyle = 'rgba(0, 255, 102, 0.35)';
     cyberCtx.lineWidth = 1.5;
     cyberCtx.beginPath();
     gridY += 0.03;

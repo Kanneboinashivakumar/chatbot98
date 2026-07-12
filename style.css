@@ -76,21 +76,21 @@
   }
 
   body.theme-cyber {
-    background: #05020c;
-    --win-bg: rgba(6, 3, 14, 0.95);
-    --win-border: 1.5px solid #00ffcc;
-    --win-shadow: 0 0 20px rgba(0, 255, 204, 0.4), inset 0 0 10px rgba(191, 0, 255, 0.35);
-    --title-bg: linear-gradient(180deg, #1b0230 0%, #06020c 100%);
-    --title-color: #00ffcc;
-    --visualizer-color: #ff00ff;
-    --taskbar-bg: linear-gradient(180deg, #0d011c, #04000a);
-    --taskbar-border: #bf00ff;
-    --text-color: #00ffcc;
-    --body-bg: #090414;
+    background: #010a03;
+    --win-bg: rgba(2, 8, 4, 0.95);
+    --win-border: 1.5px solid #00ff66;
+    --win-shadow: 0 0 20px rgba(0, 255, 102, 0.45), inset 0 0 10px rgba(0, 255, 102, 0.25);
+    --title-bg: linear-gradient(180deg, #002208 0%, #010c03 100%);
+    --title-color: #00ff66;
+    --visualizer-color: #00ff66;
+    --taskbar-bg: linear-gradient(180deg, #001f07, #000a02);
+    --taskbar-border: #00ff66;
+    --text-color: #00ff66;
+    --body-bg: #020d04;
     --win-radius: 4px;
     --win-backdrop: none;
     --inner-glow: none;
-    --accent-glow: 0 0 15px rgba(191, 0, 255, 0.6);
+    --accent-glow: 0 0 15px rgba(0, 255, 102, 0.6);
   }
   
   /* Animated desktop backgrounds */
@@ -110,8 +110,8 @@
     filter: url(#water-filter);
   }
   body.theme-cyber #desktop-bg {
-    background-color: #05020c;
-    background-image: radial-gradient(circle at center, #1b0c30 0%, #05020c 100%);
+    background-color: #010a03;
+    background-image: radial-gradient(circle at center, #022208 0%, #010a03 100%);
   }
 
   /* Bubble animation for XP (matches Y2K bubbles) */
@@ -148,7 +148,7 @@
   /* Cyber Y2K Scanlines & falling matrix lines canvas */
   .cyber-scanlines {
     position: fixed; inset: 0;
-    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(191, 0, 255, 0.08) 50%);
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 255, 102, 0.08) 50%);
     background-size: 100% 4px;
     z-index: -1;
     pointer-events: none;
@@ -175,8 +175,8 @@
     position: absolute;
     inset: 0;
     background-image: 
-      linear-gradient(rgba(191, 0, 255, 0.08) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(191, 0, 255, 0.08) 1px, transparent 1px);
+      linear-gradient(rgba(0, 255, 102, 0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 255, 102, 0.08) 1px, transparent 1px);
     background-size: 50px 50px;
     background-position: center;
     perspective: 500px;
@@ -381,22 +381,22 @@
   body.theme-cyber #win-docs,
   body.theme-cyber #win-notepad,
   body.theme-cyber #win-ie {
-    background: rgba(12, 6, 24, 0.9) !important;
-    border: 1px solid #bf00ff !important;
-    box-shadow: 0 0 15px rgba(191, 0, 255, 0.5) !important;
+    background: rgba(2, 8, 4, 0.95) !important;
+    border: 1px solid #00ff66 !important;
+    box-shadow: 0 0 15px rgba(0, 255, 102, 0.5) !important;
     border-radius: 0 !important;
   }
   body.theme-cyber .wmp-controls {
-    background: #110022 !important;
-    border-top: 1px solid #bf00ff !important;
+    background: #001505 !important;
+    border-top: 1px solid #00ff66 !important;
   }
   body.theme-cyber .wmp-btn {
     background: #000 !important;
-    border: 1px solid #bf00ff !important;
-    color: #00ffcc !important;
+    border: 1px solid #00ff66 !important;
+    color: #00ff66 !important;
   }
   body.theme-cyber #wmp-visualizer {
-    border-color: #bf00ff !important;
+    border-color: #00ff66 !important;
   }
 
   #enterbtn{
@@ -493,17 +493,17 @@
   
   /* Cyber Y2K titlebar scanlines */
   body.theme-cyber .titlebar {
-    border-bottom: 1.5px solid #00ffcc;
+    border-bottom: 1.5px solid #00ff66;
   }
   body.theme-cyber .winbtns span {
     background: #000;
-    border: 1px solid #00ffcc;
-    color: #00ffcc;
+    border: 1px solid #00ff66;
+    color: #00ff66;
   }
   body.theme-cyber .winbtns span:hover {
-    background: #00ffcc;
+    background: #00ff66;
     color: #000;
-    box-shadow: 0 0 8px #00ffcc;
+    box-shadow: 0 0 8px #00ff66;
   }
 
   .menubar{
@@ -515,9 +515,9 @@
     border-color: rgba(255,255,255,0.25);
   }
   body.theme-cyber .menubar {
-    background: #15092a;
-    border-color: #bf00ff;
-    color: #00ffcc;
+    background: #001505;
+    border-color: #00ff66;
+    color: #00ff66;
   }
   .menubar span:hover{background:var(--xp-lightblue); cursor: pointer;}
 
@@ -536,9 +536,9 @@
     border-bottom-color: rgba(255,255,255,0.3);
   }
   body.theme-cyber .bl-header {
-    background: #250b4a;
-    color: #ff00ff;
-    border-bottom-color: #bf00ff;
+    background: #001505;
+    color: #00ff66;
+    border-bottom-color: #00ff66;
   }
   .bl-group{
     background:var(--xp-lightblue);font-size:11px;font-weight:bold;color:#0a246a;
@@ -550,27 +550,27 @@
     border-bottom-color: rgba(255,255,255,0.2);
   }
   body.theme-cyber .bl-group {
-    background: #1c003d;
-    color: #00ffcc;
-    border-bottom-color: #bf00ff;
+    background: #001004;
+    color: #00ff66;
+    border-bottom-color: #00ff66;
   }
   .bl-buddy{
     display:flex;align-items:center;gap:6px;padding:6px 10px;font-size:12.5px;
     cursor:pointer;border-bottom:1px solid #f0f0f0;
   }
   body.theme-cyber .bl-buddy {
-    border-bottom-color: rgba(191,0,255,0.15);
+    border-bottom-color: rgba(0,255,102,0.15);
   }
   .bl-buddy:hover{background:#e6f0ff;}
   body.theme-aero .bl-buddy:hover { background: rgba(255,255,255,0.3); }
-  body.theme-cyber .bl-buddy:hover { background: rgba(191,0,255,0.1); }
+  body.theme-cyber .bl-buddy:hover { background: rgba(0,255,102,0.1); }
   
   .dot{width:9px;height:9px;border-radius:50%;flex:none;}
   .dot.online{background:var(--xp-green);box-shadow:0 0 3px var(--xp-green);}
   .dot.away{background:var(--xp-away);box-shadow:0 0 3px var(--xp-away);}
   .dot.offline-dot{background:#888;box-shadow:none;}
   .bl-name{color:var(--link-purple);text-decoration:underline;font-weight:bold;}
-  body.theme-cyber .bl-name { color: #ff00ff; }
+  body.theme-cyber .bl-name { color: #00ff66; }
   .bl-status{color:#666;font-size:10.5px;margin-left:16px;display:block;}
   body.theme-cyber .bl-status { color: #888; }
   .bl-footer{
@@ -583,8 +583,8 @@
     color: #333;
   }
   body.theme-cyber .bl-footer {
-    background: #15092a;
-    border-top-color: #bf00ff;
+    background: #001505;
+    border-top-color: #00ff66;
     color: #888;
   }
   .nowplaying{
@@ -596,9 +596,9 @@
     color: #0c335c;
   }
   body.theme-cyber .nowplaying {
-    background: #0f0522;
-    border-top-color: #bf00ff;
-    color: #00ffcc;
+    background: #000f03;
+    border-top-color: #00ff66;
+    color: #00ff66;
   }
   .nowplaying .note{animation:blink 1s steps(1) infinite;}
   @keyframes blink{50%{opacity:.25;}}
@@ -617,8 +617,8 @@
     border-bottom-color: rgba(255,255,255,0.25);
   }
   body.theme-cyber .chat-toolbar {
-    background: #15092a;
-    border-bottom-color: #bf00ff;
+    background: #001505;
+    border-bottom-color: #00ff66;
   }
   .chat-toolbar button{
     background:linear-gradient(180deg,#fdfdfd,#dcdcdc);border:1px solid #8a8a8a;
@@ -632,9 +632,9 @@
   .msg{margin-bottom:6px;}
   .who{font-weight:bold;}
   .who.user{color:var(--chat-user);}
-  body.theme-cyber .who.user { color: #00ffcc; }
+  body.theme-cyber .who.user { color: #00ff66; }
   .who.bot{color:var(--chat-bot);}
-  body.theme-cyber .who.bot { color: #ff00ff; }
+  body.theme-cyber .who.bot { color: #00ff66; }
   .ts{color:#888;font-size:11px;font-family:Tahoma,sans-serif;margin-left:4px;}
   .typing{color:#888;font-size:12px;font-style:italic;font-family:Tahoma,sans-serif;padding:2px 10px;}
   .chat-inputbar{
@@ -646,8 +646,8 @@
     border-top-color: rgba(255,255,255,0.25);
   }
   body.theme-cyber .chat-inputbar {
-    background: #15092a;
-    border-top-color: #bf00ff;
+    background: #001505;
+    border-top-color: #00ff66;
   }
   .fmtrow{display:flex;gap:4px;}
   .fmtrow button{
@@ -673,8 +673,8 @@
     color: #333;
   }
   body.theme-cyber .chat-status {
-    background: #0f0522;
-    border-top-color: #bf00ff;
+    background: #000f03;
+    border-top-color: #00ff66;
     color: #888;
   }
 
@@ -738,19 +738,19 @@
     box-shadow: 0 0 12px rgba(0,210,255,0.7), inset 0 0 8px rgba(255,255,255,0.8);
   }
   body.theme-cyber #startOrb {
-    border: 1px solid #00ffcc;
-    color: #00ffcc;
+    border: 1px solid #00ff66;
+    color: #00ff66;
     font-weight: bold;
     font-family: monospace;
     text-transform: uppercase;
-    box-shadow: 0 0 8px rgba(0, 255, 204, 0.4);
+    box-shadow: 0 0 8px rgba(0, 255, 102, 0.4);
     padding: 2px 10px;
     height: 28px;
     border-radius: 3px;
   }
   body.theme-cyber #startOrb:hover {
-    background: rgba(0, 255, 204, 0.15);
-    box-shadow: 0 0 12px #00ffcc;
+    background: rgba(0, 255, 102, 0.15);
+    box-shadow: 0 0 12px #00ff66;
   }
   #taskbar-tasks {
     flex: 1;
@@ -811,12 +811,12 @@
     background: rgba(255,255,255,0.15);
   }
   body.theme-cyber .shortcut {
-    color: #00ffcc;
-    text-shadow: 0 0 5px #00ffcc;
+    color: #00ff66;
+    text-shadow: 0 0 5px #00ff66;
   }
   body.theme-cyber .shortcut:hover {
-    background: rgba(191,0,255,0.2);
-    box-shadow: 0 0 8px #bf00ff;
+    background: rgba(0,255,102,0.2);
+    box-shadow: 0 0 8px #00ff66;
   }
   body.theme-xp .shortcut {
     color: #fff;
