@@ -1,8 +1,15 @@
 # 🤖 ChatBot98: AI Messenger 2006
+> A fully capable modern AI assistant reimagined as an early 2000s AIM/MSN buddy.
 
 <p align="center">
-  <img src="./assets/images/live_screenshot_boot.png" width="48%" alt="Dial-up Boot Screen" />
-  <img src="./assets/images/live_screenshot_workspace.png" width="48%" alt="Desktop Workspace" />
+  <img src="./assets/Interface.png" width="85%" alt="ChatBot98 Desktop Interface" />
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Deploy-Vercel-success?style=for-the-badge&logo=vercel" alt="Vercel Deploy" />
+  <img src="https://img.shields.io/badge/Frontend-Vanilla%20JS-yellow?style=for-the-badge&logo=javascript" alt="Frontend Javascript" />
+  <img src="https://img.shields.io/badge/AI%20Model-DeepSeek%20V4-emerald?style=for-the-badge&logo=deepseek" alt="AI Engine" />
+  <img src="https://img.shields.io/badge/Sound-Web%20Audio-blue?style=for-the-badge&logo=music" alt="Web Audio" />
 </p>
 
 *   **Live Demo URL**: [chatbot98-a8il.vercel.app](https://chatbot98-a8il.vercel.app)
@@ -61,6 +68,12 @@ graph TD
 ## 🎨 Three Era Skins (The Design Engines)
 
 Toggle between the three major design trends of the Y2K/2000s era directly from the desktop taskbar:
+
+<p align="center">
+  <img src="./assets/theme1.png" width="32%" alt="Windows XP Luna Blue" />
+  <img src="./assets/theme2.png" width="32%" alt="Frutiger Aero Frosted" />
+  <img src="./assets/theme3.png" width="32%" alt="Cyber Y2K Hacker" />
+</p>
 
 ### 🌻 1. Windows XP Luna Blue (Skeuomorphic)
 *   **Titlebars**: Luna blue gradients with rounded header caps and XP's bright red close button.

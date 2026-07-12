@@ -103,10 +103,10 @@
     overflow: hidden;
   }
   body.theme-xp #desktop-bg {
-    background-image: url('./assets/images/media__1783782500151.jpg'); /* Bliss */
+    background-image: url('./assets/wallpaper_xp.jpg'); /* Bliss */
   }
   body.theme-aero #desktop-bg {
-    background-image: url('./assets/images/media__1783822696363.jpg'); /* Leaves + glass rings */
+    background-image: url('./assets/wallpaper_aero.jpg'); /* Leaves + glass rings */
     filter: url(#water-filter);
   }
   body.theme-cyber #desktop-bg {
