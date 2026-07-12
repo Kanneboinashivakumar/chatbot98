@@ -1,0 +1,853 @@
+:root{
+    --xp-navy:#0a246a;
+    --xp-blue:#3169c6;
+    --xp-lightblue:#a6caf0;
+    --xp-silver:#ece9d8;
+    --xp-silverdark:#c0c0c0;
+    --xp-green:#3ad900;
+    --xp-away:#f0a30a;
+    --link-purple:#800080;
+    --chat-user:#0000cc;
+    --chat-bot:#cc0000;
+    
+    /* Default XP values */
+    --win-bg: #ece9d8;
+    --win-border: 1px solid #0a246a;
+    --win-shadow: 2px 2px 8px rgba(0,0,0,.5);
+    --title-bg: linear-gradient(180deg,#2a6cd6 0%, #1955c0 4%, #0a3fa6 40%, #0a246a 60%, #123a8f 84%, #1650b8 100%);
+    --title-color: #fff;
+    --visualizer-color: #3ad900;
+    --taskbar-bg: linear-gradient(180deg, #245dd7 0%, #0e3eb4 10%, #1852cf 40%, #245dd7 100%);
+    --taskbar-border: #08216b;
+    --text-color: #000;
+    --body-bg: #fff;
+    --win-radius: 0px;
+    --win-backdrop: none;
+    --inner-glow: none;
+    --accent-glow: none;
+  }
+  *{box-sizing:border-box;}
+  
+  html,body{
+    height:100%;margin:0;
+    font-family: Tahoma, Geneva, sans-serif;
+    display:flex;align-items:center;justify-content:center;
+    overflow:hidden;
+    position: relative;
+    width: 100%;
+    transition: background 0.5s ease;
+  }
+
+  /* ---------- THEME CONFIGS ---------- */
+  body.theme-xp {
+    background: #5a7edc;
+    --win-bg: #ece9d8;
+    --win-border: 3px solid #0055e6;
+    --win-shadow: 3px 3px 12px rgba(0,0,0,0.35);
+    --title-bg: linear-gradient(to bottom, #0058e6 0%, #3a8df5 10%, #0055e6 50%, #0044cc 100%);
+    --title-color: #fff;
+    --visualizer-color: #3ad900;
+    --taskbar-bg: linear-gradient(to bottom, #245dd7 0%, #0e3eb4 10%, #1852cf 40%, #245dd7 100%);
+    --taskbar-border: #08216b;
+    --text-color: #000;
+    --body-bg: #fff;
+    --win-radius: 6px 6px 0 0;
+    --win-backdrop: none;
+    --inner-glow: none;
+    --accent-glow: none;
+  }
+
+  body.theme-aero {
+    background: linear-gradient(135deg, #0e5dbf, #149acf, #36a524);
+    --win-bg: rgba(255, 255, 255, 0.28);
+    --win-border: 1px solid rgba(255, 255, 255, 0.45);
+    --win-shadow: 0 12px 36px rgba(13, 98, 198, 0.25);
+    --title-bg: linear-gradient(180deg, rgba(255,255,255,0.65) 0%, rgba(210,235,255,0.45) 30%, rgba(13,98,198,0.2) 60%, rgba(17,160,207,0.1) 100%);
+    --title-color: #0c335c;
+    --visualizer-color: #00d2ff;
+    --taskbar-bg: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.18) 30%, rgba(0,0,0,0.25) 65%, rgba(0,0,0,0.55) 100%);
+    --taskbar-border: rgba(255,255,255,0.2);
+    --text-color: #000;
+    --body-bg: rgba(255, 255, 255, 0.78);
+    --win-radius: 12px;
+    --win-backdrop: blur(18px) saturate(125%);
+    --inner-glow: inset 1px 1px 0px rgba(255,255,255,0.75);
+    --accent-glow: 0 0 12px rgba(0, 210, 255, 0.35);
+  }
+
+  body.theme-cyber {
+    background: #05020c;
+    --win-bg: rgba(6, 3, 14, 0.95);
+    --win-border: 1.5px solid #00ffcc;
+    --win-shadow: 0 0 20px rgba(0, 255, 204, 0.4), inset 0 0 10px rgba(191, 0, 255, 0.35);
+    --title-bg: linear-gradient(180deg, #1b0230 0%, #06020c 100%);
+    --title-color: #00ffcc;
+    --visualizer-color: #ff00ff;
+    --taskbar-bg: linear-gradient(180deg, #0d011c, #04000a);
+    --taskbar-border: #bf00ff;
+    --text-color: #00ffcc;
+    --body-bg: #090414;
+    --win-radius: 4px;
+    --win-backdrop: none;
+    --inner-glow: none;
+    --accent-glow: 0 0 15px rgba(191, 0, 255, 0.6);
+  }
+  
+  /* Animated desktop backgrounds */
+  #desktop-bg {
+    position: fixed; inset: 0;
+    z-index: -2;
+    background-size: cover;
+    background-position: center;
+    transition: background 0.6s ease;
+    overflow: hidden;
+  }
+  body.theme-xp #desktop-bg {
+    background-image: url('./assets/images/media__1783782500151.jpg'); /* Bliss */
+  }
+  body.theme-aero #desktop-bg {
+    background-image: url('./assets/images/media__1783822696363.jpg'); /* Leaves + glass rings */
+    filter: url(#water-filter);
+  }
+  body.theme-cyber #desktop-bg {
+    background-color: #05020c;
+    background-image: radial-gradient(circle at center, #1b0c30 0%, #05020c 100%);
+  }
+
+  /* Bubble animation for XP (matches Y2K bubbles) */
+  .xp-bubble {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0.15) 35%, rgba(0,162,255,0.2) 70%, rgba(255,255,255,0) 100%);
+    border: 1.5px solid rgba(255,255,255,0.55);
+    box-shadow: inset -2px -2px 6px rgba(0,0,0,0.05), 0 4px 12px rgba(0,100,255,0.12);
+    pointer-events: none;
+    animation: riseUp 14s infinite linear;
+  }
+  @keyframes riseUp {
+    0% { transform: translateY(110vh) translateX(0) scale(0.7); opacity: 0; }
+    10% { opacity: 0.75; }
+    90% { opacity: 0.75; }
+    100% { transform: translateY(-15vh) translateX(60px) scale(1.1); opacity: 0; }
+  }
+
+  /* Clouds drifting for XP */
+  .xp-cloud {
+    position: absolute;
+    width: 320px; height: 100px;
+    background: radial-gradient(ellipse at center, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0) 70%);
+    filter: blur(15px);
+    pointer-events: none;
+    animation: driftCloud 55s infinite linear;
+  }
+  @keyframes driftCloud {
+    from { transform: translateX(-350px); }
+    to { transform: translateX(110vw); }
+  }
+
+  /* Cyber Y2K Scanlines & falling matrix lines canvas */
+  .cyber-scanlines {
+    position: fixed; inset: 0;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(191, 0, 255, 0.08) 50%);
+    background-size: 100% 4px;
+    z-index: -1;
+    pointer-events: none;
+    display: none;
+  }
+  body.theme-cyber .cyber-scanlines {
+    display: block;
+  }
+  #cyber-canvas {
+    position: fixed; inset: 0;
+    width: 100%; height: 100%;
+    z-index: -1;
+    display: none;
+    opacity: 0.35;
+    pointer-events: none;
+  }
+  body.theme-cyber #cyber-canvas {
+    display: block;
+  }
+
+  /* Cyber laser grid landscape */
+  .cyber-grid {
+    display: none;
+    position: absolute;
+    inset: 0;
+    background-image: 
+      linear-gradient(rgba(191, 0, 255, 0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(191, 0, 255, 0.08) 1px, transparent 1px);
+    background-size: 50px 50px;
+    background-position: center;
+    perspective: 500px;
+    transform: rotateX(60deg) scale(2);
+    transform-origin: top center;
+    animation: gridScroll 10s linear infinite;
+    z-index: 0;
+  }
+  body.theme-cyber .cyber-grid {
+    display: block;
+  }
+  @keyframes gridScroll {
+    from { background-position: 0 0; }
+    to { background-position: 0 50px; }
+  }
+
+  button{font-family:inherit;}
+  :focus-visible{outline:2px solid #ffdf3c;outline-offset:1px;}
+
+  /* ---------- BOOT / DIAL-UP SCREEN ---------- */
+  #boot {
+    position: fixed; inset: 0; z-index: 100;
+    background: #080a10;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    overflow: hidden;
+    transition: transform 0.8s cubic-bezier(0.85, 0, 0.15, 1), opacity 0.8s ease;
+    font-family: "Courier New", monospace; font-size: 14px;
+    color: #c0c0c0;
+  }
+  #boot.fade-out {
+    transform: translateY(-100%);
+    opacity: 0;
+    pointer-events: none;
+  }
+  .boot-glow {
+    position: absolute; width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(13, 112, 218, 0.15) 0%, rgba(20, 160, 200, 0.03) 50%, rgba(0,0,0,0) 70%);
+    z-index: 0;
+    animation: pulseGlow 8s ease infinite alternate;
+  }
+  @keyframes pulseGlow {
+    0% { transform: scale(1); opacity: 0.8; }
+    100% { transform: scale(1.2); opacity: 1; }
+  }
+  .crt-monitor {
+    position: relative;
+    width: 500px; height: 480px;
+    background: #20222a;
+    border: 12px solid #333642;
+    border-radius: 20px;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.85), inset 0 2px 4px rgba(255,255,255,0.15);
+    display: flex; flex-direction: column;
+    padding: 6px;
+    z-index: 2;
+  }
+  .crt-monitor::before {
+    content: "";
+    position: absolute;
+    bottom: -32px; left: 50%;
+    transform: translateX(-50%);
+    width: 140px; height: 26px;
+    background: #15171d;
+    border-radius: 4px;
+    border-bottom: 4px solid #000;
+  }
+  .crt-screen {
+    position: relative;
+    flex: 1;
+    background: #000b02;
+    border: 6px solid #111216;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: inset 0 0 16px rgba(0,255,80,0.4);
+    display: flex; flex-direction: column;
+    align-items: center;
+    padding: 10px;
+  }
+  .crt-screen::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 40%, rgba(0,0,0,0) 41%);
+    pointer-events: none;
+    z-index: 10;
+  }
+  
+  /* Twinkling star field */
+  .stars-container {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+  .star {
+    position: absolute;
+    background: #fff;
+    border-radius: 50%;
+    animation: starTwinkle 3s infinite ease-in-out;
+  }
+  @keyframes starTwinkle {
+    0%, 100% { transform: scale(0.4); opacity: 0.2; }
+    50% { transform: scale(1.1); opacity: 0.9; }
+  }
+  .floating-object {
+    position: absolute;
+    z-index: 0;
+    pointer-events: none;
+    user-select: none;
+    font-size: 48px;
+    animation: objFloat 22s infinite linear;
+  }
+  @keyframes objFloat {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    50% { transform: translate(60px, -60px) rotate(180deg); }
+    100% { transform: translate(0, 0) rotate(360deg); }
+  }
+
+  #bootlines{width:100%; max-height:75px; overflow:hidden;}
+  .bootline{opacity:0;white-space:pre-wrap;margin:1px 0;}
+  .bootline.show{opacity:1;}
+  .ok{color:#00ff66;}
+  #dialbar{width:520px;max-width:90vw;height:18px;border:1px solid #444;margin-top:14px;position:relative;background:#111;}
+  #dialbar-fill{height:100%;width:0%;background:repeating-linear-gradient(45deg,#00aaff,#00aaff 8px,#0077cc 8px,#0077cc 16px);transition:width .25s linear;}
+  #dialpct{margin-top:6px;font-size:12px;}
+  
+  /* Spinning CD disc Y2K element */
+  .spinning-cd {
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #333 10%, #777 15%, #aaa 25%, #fff 40%, #777 55%, #111 70%);
+    position: relative;
+    animation: spin 3s linear infinite;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.4), inset 0 0 10px rgba(255,255,255,0.3);
+    margin-bottom: 20px;
+  }
+  .cd-inner {
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    background: #080a10;
+    border: 3px solid #666;
+    position: absolute;
+    inset: 0; margin: auto;
+  }
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  .boot-theme-select {
+    margin-top: 18px;
+    width: 100%;
+    border-top: 1px dashed rgba(255,255,255,0.15);
+    padding-top: 14px;
+    text-align: center;
+  }
+  .theme-select-btn {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 4px;
+    color: #ccc;
+    font-family: inherit;
+    font-size: 11px;
+    padding: 4px 12px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.2s;
+  }
+  .theme-select-btn.active {
+    background: #0088ff;
+    border-color: #00aaff;
+    color: #fff;
+    box-shadow: 0 0 8px rgba(0, 136, 255, 0.5);
+  }
+  .theme-select-btn:hover {
+    background: rgba(255,255,255,0.12);
+  }
+
+  /* WMP Custom glass skin for Aero */
+  body.theme-aero #win-wmp,
+  body.theme-aero #win-docs,
+  body.theme-aero #win-notepad,
+  body.theme-aero #win-ie {
+    background: rgba(255, 255, 255, 0.35) !important;
+    border: 1px solid rgba(255, 255, 255, 0.6) !important;
+    backdrop-filter: blur(15px) saturate(120%) !important;
+    box-shadow: 0 8px 32px rgba(13, 98, 198, 0.25), inset 1px 1px 0px rgba(255,255,255,0.7) !important;
+    border-radius: 12px !important;
+  }
+  body.theme-aero .wmp-controls {
+    background: transparent !important;
+    border-top: 1px solid rgba(255,255,255,0.3) !important;
+  }
+  body.theme-aero .wmp-btn {
+    background: rgba(255,255,255,0.45) !important;
+    border: 1px solid rgba(255,255,255,0.5) !important;
+    color: #0c335c !important;
+    border-radius: 4px;
+  }
+  
+  /* Cyber Y2K skin for new windows */
+  body.theme-cyber #win-wmp,
+  body.theme-cyber #win-docs,
+  body.theme-cyber #win-notepad,
+  body.theme-cyber #win-ie {
+    background: rgba(12, 6, 24, 0.9) !important;
+    border: 1px solid #bf00ff !important;
+    box-shadow: 0 0 15px rgba(191, 0, 255, 0.5) !important;
+    border-radius: 0 !important;
+  }
+  body.theme-cyber .wmp-controls {
+    background: #110022 !important;
+    border-top: 1px solid #bf00ff !important;
+  }
+  body.theme-cyber .wmp-btn {
+    background: #000 !important;
+    border: 1px solid #bf00ff !important;
+    color: #00ffcc !important;
+  }
+  body.theme-cyber #wmp-visualizer {
+    border-color: #bf00ff !important;
+  }
+
+  #enterbtn{
+    margin-top:22px;background:#ece9d8;border:2px outset #fff;
+    padding:6px 22px;font-weight:bold;cursor:pointer;font-size:13px;display:none;
+    color: #000;
+  }
+  #enterbtn:active{border-style:inset;}
+
+  /* ---------- WINDOW CHROME (shared) ---------- */
+  .win{
+    background:var(--win-bg);
+    border:var(--win-border);
+    box-shadow:var(--win-shadow);
+    display:flex;flex-direction:column;
+    backdrop-filter: var(--win-backdrop);
+    border-radius: var(--win-radius);
+    box-shadow: var(--win-shadow), var(--inner-glow);
+    z-index: 10;
+  }
+  
+  /* Aero gloss sheen overlay */
+  body.theme-aero .win {
+    position: relative;
+  }
+  body.theme-aero .win::after {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 35%;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0.05) 100%);
+    pointer-events: none;
+    border-radius: 11px 11px 0 0;
+    z-index: 9;
+  }
+  
+  /* Water Droplets aesthetic inside Aero window bodies */
+  .aero-droplet {
+    position: absolute;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.15) 30%, rgba(0,0,0,0.06) 75%, rgba(255,255,255,0) 100%);
+    border: 0.5px solid rgba(255,255,255,0.5);
+    box-shadow: inset -1px -1px 2px rgba(0,0,0,0.12), 1px 2px 4px rgba(0,80,200,0.16);
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.65;
+  }
+
+  .titlebar{
+    background:var(--title-bg);
+    color:var(--title-color);
+    font-weight:bold;font-size:13px;
+    padding:3px 4px 4px 6px;display:flex;align-items:center;gap:6px;
+    border-bottom:1px solid rgba(0, 0, 0, 0.15);
+    position: relative;
+    z-index: 10;
+  }
+  .titlebar .icon{width:14px;height:14px;background:var(--xp-green);border-radius:50%;border:1px solid #1a5c00;flex:none;}
+  .titlebar .ttl{flex:1;text-shadow:1px 1px 1px rgba(0,0,0,.4);letter-spacing:.2px;}
+  .winbtns{display:flex;gap:2px;}
+  .winbtns span{
+    width:18px;height:16px;
+    background:linear-gradient(180deg,#f4f4f4,#c9c9c9);
+    border:1px solid #7d8fa8;border-radius:2px;font-size:10px;color:#111;
+    display:flex;align-items:center;justify-content:center;line-height:0;
+    cursor: pointer;
+  }
+  
+  /* Authentic XP Luna close/minimize button styling */
+  body.theme-xp .winbtns span {
+    width: 21px; height: 21px;
+    font-weight: bold;
+    box-shadow: inset 1px 1px 1px rgba(255,255,255,0.45);
+    border-radius: 3px;
+    font-size: 11px;
+  }
+  body.theme-xp .winbtns span:not(:last-child) {
+    background: linear-gradient(to bottom, #76a5eb 0%, #2968d6 50%, #154fb5 100%) !important;
+    border: 1px solid #1a3c6b !important;
+    color: #fff !important;
+  }
+  body.theme-xp .winbtns span:not(:last-child):hover {
+    background: linear-gradient(to bottom, #98beff 0%, #4080ff 50%, #2460cc 100%) !important;
+  }
+  body.theme-xp .winbtns span:last-child {
+    background: linear-gradient(to bottom, #f38f75 0%, #cc300c 50%, #ae1e00 100%) !important;
+    border: 1px solid #8e1f06 !important;
+    color: #fff !important;
+    font-size: 14px !important;
+  }
+  body.theme-xp .winbtns span:last-child:hover {
+    background: linear-gradient(to bottom, #ff9980 0%, #e6451e 50%, #c32400 100%) !important;
+  }
+  
+  /* Cyber Y2K titlebar scanlines */
+  body.theme-cyber .titlebar {
+    border-bottom: 1.5px solid #00ffcc;
+  }
+  body.theme-cyber .winbtns span {
+    background: #000;
+    border: 1px solid #00ffcc;
+    color: #00ffcc;
+  }
+  body.theme-cyber .winbtns span:hover {
+    background: #00ffcc;
+    color: #000;
+    box-shadow: 0 0 8px #00ffcc;
+  }
+
+  .menubar{
+    background:var(--xp-silver);border-bottom:1px solid #b8b3a0;
+    font-size:12px;padding:2px 6px;display:flex;gap:14px;color:#222;
+  }
+  body.theme-aero .menubar {
+    background: rgba(255,255,255,0.4);
+    border-color: rgba(255,255,255,0.25);
+  }
+  body.theme-cyber .menubar {
+    background: #15092a;
+    border-color: #bf00ff;
+    color: #00ffcc;
+  }
+  .menubar span:hover{background:var(--xp-lightblue); cursor: pointer;}
+
+  /* ---------- BUDDY LIST ---------- */
+  #buddylist{width:230px;height:430px;position:fixed;left:50px;top:50px;display:none;}
+  #buddylist.show{display:flex;}
+  .bl-body{flex:1;overflow-y:auto;background:var(--body-bg); color: var(--text-color);}
+  .bl-header{
+    background:linear-gradient(180deg,#fffbe0,#fff2b0);
+    border-bottom:1px solid #d8c96a;font-size:11px;color:#5a4a00;
+    padding:4px 8px;font-weight:bold;
+  }
+  body.theme-aero .bl-header {
+    background: linear-gradient(180deg, rgba(255,255,255,0.5), rgba(200,230,255,0.3));
+    color: #0c335c;
+    border-bottom-color: rgba(255,255,255,0.3);
+  }
+  body.theme-cyber .bl-header {
+    background: #250b4a;
+    color: #ff00ff;
+    border-bottom-color: #bf00ff;
+  }
+  .bl-group{
+    background:var(--xp-lightblue);font-size:11px;font-weight:bold;color:#0a246a;
+    padding:3px 6px;display:flex;align-items:center;gap:4px;border-bottom:1px solid #8fb3e0;
+  }
+  body.theme-aero .bl-group {
+    background: rgba(13,98,198,0.25);
+    color: #05264b;
+    border-bottom-color: rgba(255,255,255,0.2);
+  }
+  body.theme-cyber .bl-group {
+    background: #1c003d;
+    color: #00ffcc;
+    border-bottom-color: #bf00ff;
+  }
+  .bl-buddy{
+    display:flex;align-items:center;gap:6px;padding:6px 10px;font-size:12.5px;
+    cursor:pointer;border-bottom:1px solid #f0f0f0;
+  }
+  body.theme-cyber .bl-buddy {
+    border-bottom-color: rgba(191,0,255,0.15);
+  }
+  .bl-buddy:hover{background:#e6f0ff;}
+  body.theme-aero .bl-buddy:hover { background: rgba(255,255,255,0.3); }
+  body.theme-cyber .bl-buddy:hover { background: rgba(191,0,255,0.1); }
+  
+  .dot{width:9px;height:9px;border-radius:50%;flex:none;}
+  .dot.online{background:var(--xp-green);box-shadow:0 0 3px var(--xp-green);}
+  .dot.away{background:var(--xp-away);box-shadow:0 0 3px var(--xp-away);}
+  .dot.offline-dot{background:#888;box-shadow:none;}
+  .bl-name{color:var(--link-purple);text-decoration:underline;font-weight:bold;}
+  body.theme-cyber .bl-name { color: #ff00ff; }
+  .bl-status{color:#666;font-size:10.5px;margin-left:16px;display:block;}
+  body.theme-cyber .bl-status { color: #888; }
+  .bl-footer{
+    font-size:10px;color:#333;background:var(--xp-silver);border-top:1px solid #b8b3a0;
+    padding:4px 8px;display:flex;justify-content:space-between;
+  }
+  body.theme-aero .bl-footer {
+    background: rgba(255,255,255,0.3);
+    border-top-color: rgba(255,255,255,0.2);
+    color: #333;
+  }
+  body.theme-cyber .bl-footer {
+    background: #15092a;
+    border-top-color: #bf00ff;
+    color: #888;
+  }
+  .nowplaying{
+    font-size:10px;color:#0000cc;background:#fffdf0;border-top:1px solid #d8c96a;
+  }
+  body.theme-aero .nowplaying {
+    background: rgba(255,255,255,0.45);
+    border-top-color: rgba(255,255,255,0.3);
+    color: #0c335c;
+  }
+  body.theme-cyber .nowplaying {
+    background: #0f0522;
+    border-top-color: #bf00ff;
+    color: #00ffcc;
+  }
+  .nowplaying .note{animation:blink 1s steps(1) infinite;}
+  @keyframes blink{50%{opacity:.25;}}
+  .nowplaying a{color:var(--link-purple);text-decoration:underline;cursor:pointer;}
+  @media (prefers-reduced-motion: reduce){ .nowplaying .note{animation:none;} }
+
+  /* ---------- CHAT WINDOW ---------- */
+  #chatwin{width:430px;height:480px;position:fixed;right:80px;bottom:80px;display:none;flex-direction:column;}
+  #chatwin.show{display:flex;}
+  .chat-toolbar{
+    display:flex;gap:6px;padding:4px 6px;background:var(--xp-silver);
+    border-bottom:1px solid #b8b3a0;
+  }
+  body.theme-aero .chat-toolbar {
+    background: rgba(255,255,255,0.3);
+    border-bottom-color: rgba(255,255,255,0.25);
+  }
+  body.theme-cyber .chat-toolbar {
+    background: #15092a;
+    border-bottom-color: #bf00ff;
+  }
+  .chat-toolbar button{
+    background:linear-gradient(180deg,#fdfdfd,#dcdcdc);border:1px solid #8a8a8a;
+    border-radius:2px;font-size:11px;padding:2px 7px;cursor:pointer;
+  }
+  #chatlog{
+    flex:1;background:var(--body-bg);overflow-y:auto;padding:8px 10px;
+    font-family:"Times New Roman", serif;font-size:14px;line-height:1.5;
+    color: var(--text-color);
+  }
+  .msg{margin-bottom:6px;}
+  .who{font-weight:bold;}
+  .who.user{color:var(--chat-user);}
+  body.theme-cyber .who.user { color: #00ffcc; }
+  .who.bot{color:var(--chat-bot);}
+  body.theme-cyber .who.bot { color: #ff00ff; }
+  .ts{color:#888;font-size:11px;font-family:Tahoma,sans-serif;margin-left:4px;}
+  .typing{color:#888;font-size:12px;font-style:italic;font-family:Tahoma,sans-serif;padding:2px 10px;}
+  .chat-inputbar{
+    border-top:2px solid #b8b3a0;background:var(--xp-silver);
+    padding:6px;display:flex;flex-direction:column;gap:6px;
+  }
+  body.theme-aero .chat-inputbar {
+    background: rgba(255,255,255,0.3);
+    border-top-color: rgba(255,255,255,0.25);
+  }
+  body.theme-cyber .chat-inputbar {
+    background: #15092a;
+    border-top-color: #bf00ff;
+  }
+  .fmtrow{display:flex;gap:4px;}
+  .fmtrow button{
+    width:22px;height:20px;background:linear-gradient(180deg,#fdfdfd,#dcdcdc);
+    border:1px solid #8a8a8a;border-radius:2px;font-size:11px;cursor:pointer;
+  }
+  .inputrow{display:flex;gap:6px;}
+  #msgInput{
+    flex:1;height:44px;border:1px inset #888;font-family:"Times New Roman",serif;
+    font-size:14px;padding:4px;resize:none;
+  }
+  #sendBtn{
+    background:#ece9d8;border:2px outset #fff;padding:0 16px;font-weight:bold;
+    font-size:12px;cursor:pointer;
+    color: #000;
+  }
+  #sendBtn:active{border-style:inset;}
+  .chat-status{font-size:10px;color:#444;padding:2px 8px;background:var(--xp-silver);
+    border-top:1px solid #d8d5c8;display:flex;justify-content:space-between;}
+  body.theme-aero .chat-status {
+    background: rgba(255,255,255,0.25);
+    border-top-color: rgba(255,255,255,0.2);
+    color: #333;
+  }
+  body.theme-cyber .chat-status {
+    background: #0f0522;
+    border-top-color: #bf00ff;
+    color: #888;
+  }
+
+  ::-webkit-scrollbar{width:16px;}
+  ::-webkit-scrollbar-track{background:#d8d5c8;}
+  ::-webkit-scrollbar-thumb{background:linear-gradient(180deg,#f4f4f4,#c0c0c0);border:1px solid #8a8a8a;}
+
+  /* ---------- DESKTOP TASKBAR ---------- */
+  #taskbar {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    height: 40px;
+    background: var(--taskbar-bg);
+    border-top: 1px solid var(--taskbar-border);
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    z-index: 90;
+    font-size: 12px;
+  }
+  body.theme-aero #taskbar {
+    backdrop-filter: blur(12px);
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+  }
+  #startOrb {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    user-select: none;
+    height: 100%;
+    padding: 0 12px;
+  }
+  body.theme-xp #startOrb {
+    background: linear-gradient(180deg, #388a38 0%, #215921 100%);
+    border: 1px solid #1c3e1c;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    color: #fff;
+    font-weight: bold;
+    font-style: italic;
+    font-size: 14px;
+    text-shadow: 1px 1px 1px #000;
+  }
+  body.theme-xp #startOrb:hover {
+    background: linear-gradient(180deg, #4fa84f 0%, #2f7a2f 100%);
+  }
+  body.theme-aero #startOrb {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, rgba(255,255,255,0.6) 0%, rgba(13,98,198,0.7) 40%, rgba(5,40,90,0.9) 100%);
+    box-shadow: 0 2px 8px rgba(0,100,255,0.4), inset 0 0 5px rgba(255,255,255,0.6);
+    border: 1px solid rgba(255,255,255,0.4);
+    padding: 0;
+    justify-content: center;
+    transform: scale(0.95);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  body.theme-aero #startOrb:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 12px rgba(0,210,255,0.7), inset 0 0 8px rgba(255,255,255,0.8);
+  }
+  body.theme-cyber #startOrb {
+    border: 1px solid #00ffcc;
+    color: #00ffcc;
+    font-weight: bold;
+    font-family: monospace;
+    text-transform: uppercase;
+    box-shadow: 0 0 8px rgba(0, 255, 204, 0.4);
+    padding: 2px 10px;
+    height: 28px;
+    border-radius: 3px;
+  }
+  body.theme-cyber #startOrb:hover {
+    background: rgba(0, 255, 204, 0.15);
+    box-shadow: 0 0 12px #00ffcc;
+  }
+  #taskbar-tasks {
+    flex: 1;
+    display: flex;
+    gap: 6px;
+    margin-left: 12px;
+    height: 100%;
+    align-items: center;
+  }
+  .task-btn {
+    height: 28px;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 3px;
+    padding: 0 10px;
+    display: flex;
+    align-items: center;
+    color: #fff;
+    cursor: pointer;
+    max-width: 160px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    transition: background 0.2s;
+  }
+  .task-btn.active {
+    background: rgba(255,255,255,0.3);
+    border-color: rgba(255,255,255,0.45);
+    font-weight: bold;
+  }
+  .task-btn:hover {
+    background: rgba(255,255,255,0.25);
+  }
+  #systray {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #fff;
+    padding: 0 8px;
+  }
+  body.theme-xp #systray {
+    background: #0f80ff;
+    border-left: 1px solid #005ce6;
+    height: 100%;
+  }
+  #systray-time {
+    font-weight: bold;
+  }
+
+  .shortcut {
+    padding: 6px;
+    border-radius: 4px;
+    transition: background 0.2s;
+    user-select: none;
+  }
+  .shortcut:hover {
+    background: rgba(255,255,255,0.15);
+  }
+  body.theme-cyber .shortcut {
+    color: #00ffcc;
+    text-shadow: 0 0 5px #00ffcc;
+  }
+  body.theme-cyber .shortcut:hover {
+    background: rgba(191,0,255,0.2);
+    box-shadow: 0 0 8px #bf00ff;
+  }
+  body.theme-xp .shortcut {
+    color: #fff;
+  }
+  
+  .titlebar {
+    cursor: move;
+  }
+
+  /* CRT TV Scanline & Flicker Overlay */
+  #boot::after {
+    content: " ";
+    display: block;
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+    z-index: 105;
+    background-size: 100% 3px, 6px 100%;
+    pointer-events: none;
+    animation: crtFlicker 0.15s infinite;
+  }
+  @keyframes crtFlicker {
+    0% { opacity: 0.98; }
+    50% { opacity: 1; }
+    100% { opacity: 0.98; }
+  }
+
+  @media (max-width:560px){
+    #buddylist{width:92vw;height:60vh;left:4vw;top:4vw;}
+    #chatwin{width:94vw;height:66vh;right:3vw;bottom:48px;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .bootline, #dialbar-fill{transition:none;}
+  }
