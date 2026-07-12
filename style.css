@@ -845,8 +845,30 @@
   }
 
   @media (max-width:560px){
-    #buddylist{width:92vw;height:60vh;left:4vw;top:4vw;}
-    #chatwin{width:94vw;height:66vh;right:3vw;bottom:48px;}
+    #buddylist {
+      width: 92vw !important;
+      height: 60vh !important;
+      left: 4vw !important;
+      top: 4vw !important;
+    }
+    #chatwin {
+      width: 94vw !important;
+      height: 66vh !important;
+      right: 3vw !important;
+      bottom: 48px !important;
+    }
+    #win-ie {
+      width: 94vw !important;
+      height: 66vh !important;
+      left: 3vw !important;
+      top: 10px !important;
+    }
+    #win-docs, #win-sysinfo, #win-webring, #win-wmp, #win-notepad, #win-trash {
+      width: 92vw !important;
+      height: 55vh !important;
+      left: 4vw !important;
+      top: 20px !important;
+    }
   }
   @media (prefers-reduced-motion: reduce){
     .bootline, #dialbar-fill{transition:none;}
