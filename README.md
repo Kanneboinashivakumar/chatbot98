@@ -19,6 +19,42 @@ Our split architecture reflects this split directly:
 
 ---
 
+## 🔒 Security & Architecture
+
+To ensure safety and performance, the model API key is **never** exposed to the client. The browser communicates exclusively with our serverless API proxy:
+
+```mermaid
+graph TD
+    subgraph Client ["Client Browser (Retro Desktop)"]
+        UI["UI Messenger (script.js)"]
+    end
+    subgraph Server ["Vercel Serverless Hosting"]
+        Proxy["api/chat.js (Proxy API)"]
+        Env["FIREWORKS_API_KEY (Secure Env)"]
+    end
+    subgraph AI ["Fireworks AI Engine"]
+        DeepSeek["deepseek-v4-pro (LLM)"]
+    end
+
+    UI -->|1. POST conversation history| Proxy
+    Env -.->|2. Inject credentials| Proxy
+    Proxy -->|3. Authenticate completion request| DeepSeek
+    DeepSeek -->|4. Generate response token completion| Proxy
+    Proxy -->|5. Return clean JSON reply| UI
+
+    style Client fill:#0f172a,stroke:#38bdf8,stroke-width:2px,color:#fff
+    style Server fill:#1e1b4b,stroke:#818cf8,stroke-width:2px,color:#fff
+    style AI fill:#022c22,stroke:#34d399,stroke-width:2px,color:#fff
+```
+
+> [!IMPORTANT]
+> **Key Safety & Input Capping**:
+> - The Vercel function filters and sanitizes inputs, capping conversation logs to the last **24 turns** and individual message strings to **4,000 characters**.
+> - Upstream requests carry a strict **20-second timeout** to handle connectivity hangs gracefully.
+> - API error codes are intercepted by the proxy and translated into retro dialup errors (e.g., *"carrier lost"*), keeping system details hidden.
+
+---
+
 ## 🎨 Three Era Skins (The Design Engines)
 
 Toggle between the three major design trends of the Y2K/2000s era directly from the desktop taskbar:
